@@ -1,0 +1,5 @@
+pragma solidity ^0.8.0;
+contract semanticallyEquiv3{
+}
+contract semanticallyEquiv4{
+}

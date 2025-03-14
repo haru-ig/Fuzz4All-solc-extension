@@ -1,0 +1,13 @@
+pragma solidity ^0.8.0;
+contract MutatedGeneration2 {
+    assembly {
+        mstore8(0x40, 0xf)
+        mstore8(0x41, 0x45)
+        mstore8(0x42, 0xf5)
+        mstore8(0x43, 0xf5)
+        mstore8(0x44, 0x00)
+        mstore8(0x45, 0x00)
+        mstore8(0x46, 0x00)
+        mstore8(0x47, 0xe8)
+    }
+}

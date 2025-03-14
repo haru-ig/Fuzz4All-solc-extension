@@ -1,0 +1,13 @@
+pragma solidity ^0.8.0;
+contract Caller2 {
+  function callBackFunc(uint _value) public payable returns (uint sum) {
+    uint v = 1;
+    while (v < 100) {
+      sum += _value;
+      if (sum > 10) {
+        sum = 0;
+      }
+      v += v;
+    }
+  }
+}

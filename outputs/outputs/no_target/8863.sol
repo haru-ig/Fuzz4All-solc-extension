@@ -1,0 +1,43 @@
+pragma solidity ^0.8.0;
+contract EquivalentABIv2SemanticsAreMutated6 {
+    uint public _amount;
+    mapping(address => uint) public _balances;
+    uint constant public _Value81 = 1;
+    uint public _address41;
+    uint public _int2560;
+    function test (uint _value82, uint _value83) public returns (uint) {
+        uint _result;
+        uint _value80;
+        uint _value84 = _value82;
+        uint _value85 = _value83;
+        uint _int2559 = _value84;
+        _result = _int2559;
+        _value80 = _int2559;
+        uint _int2560 = 80;
+        uint _int2561 = _int2561 + _int2560;
+        uint _value86 = _int2561;
+        uint _int2562 = 1;
+        uint _int2563 = 1;
+        uint _value87 = _int2562;
+        uint _value88 = _int2562;
+        uint _result79;
+        uint _result80;
+        uint _result81;
+        uint _result82;
+        uint _result83;
+        uint _result84;
+        _int2559 = 2;
+        uint _address42 = 1;
+        uint _address43 = 1;
+        uint _address44 = 1;
+        uint _address45 = 1;
+        uint _int2564 = _int2564 + _int2562;
+        uint _value89 = _int2564 + 80;
+        uint _int2565 = _int2565 * _int2562;
+        uint _int2566 = _int2566 >> _int2563;
+        uint _int2567 = _int2567 - 80;
+        uint _int2568 = _int2568 % _int2562;
+        uint _int2569 = _int2569 / _int2562;
+        uint _value90 = _int2567 + _int2564;
+        uint _int2570 = _int2570 ^ 0;
+        uint _int2571 = _int2571 + _int

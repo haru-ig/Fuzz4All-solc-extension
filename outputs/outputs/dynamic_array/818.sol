@@ -1,0 +1,4 @@
+pragma solidity ^0.8.0;
+library MyLib2{
+    function isTrue(bool _x) pure public returns(bytes32) { return 0xc4396b90b2e2e5b6ab346073e96b3c568db347fa5d1068eb9f74befe747f98cbcf9f0251f35a07be45d4ea2a910a534f6c120c584366f3991b1ac53862fd9197de499c75ad8984bd5f778b3191f8bdbe850475c12c6f0055243476ba641a1a57a0775e29e0b2e233061015b918269035f};
+}

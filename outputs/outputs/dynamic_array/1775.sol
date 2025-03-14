@@ -1,0 +1,21 @@
+pragma solidity ^0.8.0;
+contract DerivedDynamicArraysWithNested2 {
+    uint256[][] private dynamicArrayWithNested;
+    uint256[][] private dynamicArrayWithNestedNonMutated;
+    uint256[][][] private dynamicArrayWithNestedMultiDim;
+    uint256[][][] private dynamicArrayWithNestedMultiDimNonMutated;
+    uint256[][][][] private dynamicArrayWithNestedMultiDimMultiDim;
+    uint256[][][][][] private dynamicArrayWithNestedMultiDimMultiDimNonMutated;
+    uint256[][][][][] private dynamicArrayWithNestedMultiDimMultiDimNonMutatedMultiDim;
+    uint256[][][][][][] private dynamicArrayWithNestedMultiDimMultiDimMultiDimNonMutated;
+    uint256[][][][][][] private dynamicArrayWithNestedMultiDimMultiDimMultiDimNonMutatedMultiDim;
+    uint256[][][][][][][] private dynamicArrayWithNestedMultiDimMultiDimMultiDimNonMutatedMultiDimMultiDim;
+    uint256[][][][][][][] private dynamicArrayWithNestedMultiDimMultiDimMultiDimNonMutatedMultiDimMultiDim;
+    uint256 private initialSize = 2;
+    uint256 private nonStaticArrayInitialSize = 2;
+    uint256 private nonStaticArrayNonMutatedInitialSize = 2;
+    uint256 private nonStaticArrayNonMutatedNonMutatedInitialSize = 2;
+    uint256 private nonStaticArrayMutatedInitialSize = 2;
+    uint256 private nonStaticArrayNonMutatedNonMutatedInitialSize = 2;
+    uint256[] initialNonMutatedNonMutatedArray;
+    uint256[] initialMutatedNonMutatedArray;

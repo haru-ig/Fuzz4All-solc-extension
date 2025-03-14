@@ -1,0 +1,30 @@
+pragma solidity ^0.8.0;
+contract SemanticallyEquivalent19 {
+  function foo() public pure {
+    assembly {
+      { revert(0, 0) } ->
+      { revert(0, 0) }
+    }
+  }
+  function bar() public pure {
+    assembly {
+      { revert(0, 0) } ->
+      revert(0, 0) ->
+    }
+  }
+}
+
+contract SemanticallyEquivalent20 {
+  function foo() public pure {
+    assembly {
+      nop;
+      unreachable
+    }
+  }
+  function bar() public pure {
+     assembly {
+       nop;
+       unreachable
+     }
+  }
+}

@@ -1,0 +1,61 @@
+pragma solidity ^0.8.0;
+pragma experimental ABIEncoderV2;
+contract Mutate18x {
+    uint18 public i18;
+    uint18 public i18_1;
+    uint18 public i18_2;
+    uint18 public i18_3;
+    uint18 public i18_4;
+    uint18 public i18_5;
+    uint18 public i18_6;
+    uint18 public i18_7;
+    uint18 public i18_8;
+}
+contract Mutate32x {
+    uint32 public i32;
+    uint32 public i32_1;
+    uint32 public i32_2;
+    uint32 public i32_3;
+    uint32 public i32_4;
+    uint32 public i32_5;
+    uint32 public i32_6;
+    uint32 public i32_7;
+    uint32 public i32_8;
+    uint32 public i32_9;
+    uint32 public i32_10;
+    uint32 public i32_11;
+    uint32 public i32_12;
+    uint32 public i32_13;
+    uint32 public i32_14;
+    uint32 public i32_15;
+    uint32 public i32_16;
+    uint32 public i32_17;
+    uint32 public i32_18;
+    uint32 public i32_19;
+    uint32 public i32_20;
+    uint32 public i32_21;
+    uint32 public i32_22;
+    uint32 public i32_23;
+    uint32 public i32_24;
+    uint32 public i32_25;
+    uint32 public i32_26;
+    uint32 public i32_27;
+    uint32 public i32_28;
+    uint32 public i32_29;
+    uint32 public i32_30;
+    uint32 public i32_31;
+}
+contract Mutate64x {
+    uint64 public i64;
+    uint64 public i64_1;
+    uint64 public i64_2;
+    uint64 public i64_3;
+    uint64 public i64_4;
+    uint64 public i64_5;
+    uint64 public i64_6;
+    uint64 public i64_7;
+    uint64 public i64_8;
+    uint64 public i64_9;
+    uint64 public i64_10;
+    uint64 public i64_11;
+    uint64 public

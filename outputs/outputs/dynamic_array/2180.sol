@@ -1,0 +1,6 @@
+pragma solidity ^0.8.0;
+contract SemanticEquivalence_NestedDynamicallySizedNestedArrayAssignment_23{
+    SemanticEquivalence_NestedDynamicallySizedNestedArrayAssignment_22.arrayOneType arrayOne;
+    SemanticEquivalence_NestedDynamicallySizedNestedArrayAssignment_22.arrayTwoType arrayTwo;
+    SemanticEquivalence_NestedDynamicallySizedNestedArrayAssignment_22.arrayOneType[] public mappings;
+}

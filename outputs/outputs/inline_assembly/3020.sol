@@ -1,0 +1,14 @@
+pragma solidity ^0.8.0;
+contract C {
+    uint constant max = 9223372036854775807;
+    bytes32 public constant x = '0x44';
+    function setX(uint _x) public returns (uint) {
+        uint a = getX();
+        setX(_x);
+        return getX();
+    }
+    function getX() public view returns (uint) {
+        uint n = uint(x);
+        return n;
+    }
+}

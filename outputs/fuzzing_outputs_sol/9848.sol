@@ -1,0 +1,8 @@
+pragma solidity ^0.8.0;
+contract Mutating
+{
+    uint public i;
+    receive() external payable{
+        i++;
+    }
+}

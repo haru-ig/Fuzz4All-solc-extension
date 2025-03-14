@@ -1,0 +1,3 @@
+pragma solidity ^0.8.0;
+contract SemanticEquivalence_DynamicallySizedNestedArrayAssignment_139e97a056b7d627701fd64272df4978{
+}

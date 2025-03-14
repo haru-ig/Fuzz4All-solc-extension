@@ -1,0 +1,10 @@
+pragma solidity ^0.8.0;
+contract SemanticEquivalentSolidityPointers2 {
+  struct SimplePoint2 {address a; bytes b; bytes9 c; bool e;}
+  SimplePoint2 SIMPLEREPRICEDBYTES9;
+  SimplePoint2 SIMPLEREPRICEDSIGNEDINT256;
+  SimplePoint2 SIMPLEREPRICEDSIGNEDUINT256;
+  uint[] SIMPLEREPRICEDUNSIGNEDINT256UNSIGNED2;
+  SimplePoint2[] SIMPLEREPRICEDSIGNEDINT256SIGNED;
+  uint[][] SIMPLEREPRICKEDSIGNEDINT256SIGNED2;
+  uint[][] SIMPLEREPRICKEDSIGNEDINT

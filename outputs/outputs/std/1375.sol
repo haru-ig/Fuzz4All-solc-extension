@@ -1,0 +1,7 @@
+pragma solidity ^0.8.0;
+contract Convert {
+    function toUint(string memory data) public pure returns (uint dataU) {
+        bytes memory bytes = bytes(data);
+        bytes32 m = 2**256 - 1;
+        for (uint i = 32; i < bytes.length; i += 8) {
+            uint256 elem = uint256(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes32(bytes

@@ -1,0 +1,4 @@
+pragma solidity ^0.8.0;
+contract Test3 {
+    uint[64] storage x;
+}

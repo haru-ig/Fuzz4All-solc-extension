@@ -1,0 +1,66 @@
+pragma solidity ^0.8.0;
+contract R2Mod {
+        uint a;
+        uint b;
+    constructor(uint _x) public {
+        a = _x;
+        b = _x;
+    }
+    function seta(uint _x) public {
+        a = _x;
+        b = a*a*a;
+        b = b + b*b*b;
+        b = b + b + a;
+    }
+    function setb(uint _x) public {
+        a = _x;
+        a = a*a*a;
+        b = a*a*b;
+        b = a*a*a*a;
+        b = b + b + a;
+    }
+    function swap() public returns (uint) {
+        uint temp = b;
+        b = a;
+        a = temp;
+        return a*a*a*a*a + b*b*b*b*b + b;
+    }
+    function get() public view returns (uint) {
+        return b + b*b;
+    }
+    modifier constant {
+        require(msg.sender == address(this));
+        _;
+    }
+}
+contract R9Mod {
+        uint a; b;
+        uint private g;
+        uint private c;
+        string myString;
+    constructor(string memory _value) public {
+        g = 8;
+        myString = _value;
+        c = g + myString;
+    }
+    function get() public view returns(
+        uint a1, b1, g, c) {
+        a1 = g - c;
+        g = c;
+        return a1;
+    }
+    function seta(uint _x) public {
+        a = _x;
+        b = a*a*a;
+        b = b + b*b*b;
+        b = b + b + a;
+    }
+    function setb(uint _x) public {
+        a = _x;
+        b = a*a*a;
+        b = b + b*b*a;
+        b = a*b*a*a*a*a*a*a*a + b;
+    }
+    function swap() public {
+        uint temp = b;
+        b

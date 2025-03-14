@@ -1,0 +1,41 @@
+pragma solidity ^0.8.0;
+contract EquivalentABIv2SemanticsAreMutated9 {
+    function test(uint _value221) external view returns (bytes32) {
+        bytes32 _result;
+        uint _result_converted = bytes32(_value221);
+        uint256 _result2;
+        _result2 = _value221;
+        _result = _value221;
+        _result_converted = _result2;
+        _result = _result;
+        _result = _value221;
+        _result_converted = _result2;
+        _result = _result;
+        _result = _value221;
+        _result_converted = bytes32(_result);
+        _result = _value221;
+        _result_converted = bytes32(_result);
+        _result = _value221;
+        _result_converted = bytes32(_result);
+        _result = _value221;
+        _result_converted = _value221;
+        _result = _value221;
+        bytes1 _result_converted2;
+        _result_converted2 = bytes1(uint8(uint256(uint8(_value221))));
+        _result = _value221;
+        _result_converted = _result2;
+        _result = _result;
+        _result_converted2 = bytes1(uint8(uint256(bytes1(_value221))));
+        _result = _value221;
+        _result_converted = bytes1(uint8(uint256(_value221)));
+        _result = _value221;
+        _result_converted2 = bytes1(uint8(uint256(uint8(_value221))));
+        _result = _result2;
+        _result_converted = bytes1(uint8(uint256(bytes1(_value221))));
+        _result = _value221;
+        _result_converted = uint256(uint8(uint256(uint256(_value221))));
+        _result = _value221;
+        _result = uint256(((uint256(10))) * _value221) - 1);
+        _result_converted = _result2;
+        _result = _result;
+        _result_converted = (uint256(int256(signed(uint8(uint256(bytes1(_value221))))

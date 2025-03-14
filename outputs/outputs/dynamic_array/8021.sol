@@ -1,0 +1,41 @@
+pragma solidity ^0.8.0;
+contract Test48Mut {
+    mapping(uint => uint) public numMap;
+    mapping(bytes32 => uint) public bytesMap;
+    mapping(address => uint) public addrMap;
+    mapping(binary => uint) public binMap;
+    mapping(string => uint) public strMap;
+    mapping(address => bytes) public addrBytesMap;
+    mapping(address => string) public addrStrMap;
+    mapping(uint => uint[][]) public numArraysMap;
+    mapping(uint => address) public addrArraysMap;
+    mapping(uint => bytes[][]) public bytesArraysMap;
+    mapping(uint => bytes) public bytesArrayMap;
+    mapping(uint => bool[]) public boolArrayMap;
+    mapping(uint => uint[]) public numberArrayMap;
+    mapping(uint => uint) public numberMap;
+    mapping(uint => uint[]) public dynamicArrayMap;
+    mapping(uint => uint) public dynamicArrayMap2;
+    mapping(uint => uint) public dynamicNumberMap;
+    mapping(uint => uint[]) public dynamicDynamicArrayMap;
+    mapping(uint => uint[]) public dynamicDynamicArrayMap2;
+    mapping(uint => uint[]) public dynamicDynamicNumberMap;
+    uint public x;
+    constructor() public {
+      numMap[123] = 125;
+      bytesMap[0x3045] = 125;
+      addrMap[address(this)] = 123;
+      binMap[0011] = 123;
+      strMap["hello"] = 123;
+      addrBytesMap[address(this)] = "bytes".toBytes(124);
+      addrStrMap[address(this)] = "string".toString(124);
+      numArraysMap[124][] = [125];
+      numArraysMap[125][1] = 125;
+      numArraysMap[126][1] = [125];
+      numArraysMap[126][2] = 125;
+      numArraysMap[126][3] = "string".toString(125);
+      numArraysMap[126][4] = 125;
+      addrArraysMap[123] = [address(this)];
+      addrArraysMap[124][] = [address(this)];
+      addrArraysMap[124][1] = address(this);
+      addrArraysMap

@@ -1,0 +1,31 @@
+pragma solidity ^0.8.0;
+contract Zero5Old {
+    uint initUintVarOld;
+    string initStringVarOld;
+    bytes initBytesVarOld;
+    address initAddressVarOld;
+    address payable initAddressVarAddressOld;
+    address[] initAddressesArrayVarOld;
+    bytes32[4] initBytes32ArrayVarOld;
+    bytes1 valueByteZero5Old;
+    bytes2 valueBytesTwoZero5Old;
+    bytes3 valueBytesThreeZero5Old;
+    bytes5 valueBytesFourZero5Old;
+    bytes6 valueBytesFiveZero5Old;
+    bytes7 valueBytesSixZero5Old;
+    bytes8 valueBytesSevenZero5Old;
+    bytes9 valueBytesEightZero5Old;
+    bytes10 valueBytesNineZero5Old;
+    bytes11 valueBytesTenZero5Old;
+    bytes12 valueBytesElevenZero5Old;
+    bytes13 valueBytesTwelveZero5Old;
+    bytes14 valueBytesThirteenZero5Old;
+    bytes15 valueBytesFourteenZero5Old;
+    bytes16 valueBytesFifteenZero5Old;
+    bytes17 valueBytesSixteenZero5Old;
+    bytes18 valueBytesSeventeenZero5Old;
+    bytes19 valueBytesEighteenZero5Old;
+    bytes20 valueBytesNineteenZero5Old;
+    uint valueUintZero5Old;
+    string valueStringZero5Old;
+}

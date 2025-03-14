@@ -1,0 +1,19 @@
+pragma solidity ^0.8.0;
+contract Convert {
+    function bytesToUint(bytes memory _buf) public pure returns (uint256) {
+        bytes memory buf = _buf;
+        uint256 result = 0 ;
+        for (uint256 i = 0; i < buf.length; i++) {
+
+            uint256 byte = uint8(buf[i]);
+
+            result |= uint256(byte) << (8 * (buf.length - 1 - i));
+        }
+        return result;
+    }
+}
+
+pragma solidity ^0.8.0;
+contract Math {
+
+    uint256 constant SGN_MASK = 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffcfffffffffffffffffffffffcffffffffffffffcfffffffffffcfffffffffffcfffffffffffcfffffffffffcfffffffffffcfffffffcfffffffffffffffcfffffffffffcfffffffcfffffffcfffffffcfffefffefdfffffffffffcfffffffcfffffffcfffffffcfffffffcfffffffefffffffffffffefffffffffffefffffffffffefffffffffffefffffffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffffffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffefffffffdfffffffcfffffffbfffffffffffbfffffffffffbfffff7fffffffffffdfdffffffffffff7ffffff7fffffffffffffffcfffffffbfffffffffffbfffffffffffffffdbfffffffffffffdfffffffcfffffffdfffffffdfffffffbfffffffffffdfffffffcfffffffdfffff9fffffffffffffffbfffffffcfffffffdfffffffbfffffff9fffffffffffffffbfffffffdfffffffdfffffffbfffffffdfffffffbfffffffdfffffffcfffffffcfffffff9ffffffffffff9ffffffffffff9ffffffffffffffffff3fffff9ffffffffff3ffffffe7fffffffffffffff9fffff9ffffffffffffff9fffff9ffffffffffffff9fefffff9ffffff9fffffffffff3fffffffbdfffffffbfffffffbfffffff9fffffffbffffff9fffffffbffffffdfffffffdfffffffbffffffffff9fffffffbffffff9fffffffbffffff9fffffffbfeffffff9fffffffbffffff9fffffffbffffff9fffffffbffffff9fffffffbfeffffff9fffffffbffffff9fffffffbfeffffff9ff6ffff9fffffffb57ffff9dffffff9fefffff3fffffff9fefffff3ffffff9fefffffffbfffffffcfffffffbff8

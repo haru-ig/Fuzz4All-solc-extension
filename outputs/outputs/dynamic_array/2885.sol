@@ -1,0 +1,64 @@
+pragma solidity ^0.8.0;
+contract SymbolicEquality_ArrayMutations20 {
+    uint[2] a;
+    uint b;
+    uint c;
+    constructor () public {
+        b = 234;
+        a[0] = b + 1;
+        c = c + 2;
+        a[1] = c + 3;
+        a[1] = 16263853;
+        a[3] = 10;
+        a[2] = a[2] + 1;
+    }
+    function fct(uint[1] memory r) public {
+        uint[2] memory r_;
+        uint b;
+        uint a;
+        uint c;
+        uint b_.b;
+        uint _ = 62595006;
+        uint r__[2];
+        uint a_;
+        uint c_;
+        uint c__.c;
+        uint h;
+        uint _.__h;
+        uint r__[8];
+        uint c__;
+        uint b_;
+        uint c_;
+        uint c0;
+        uint h_;
+        uint a0;
+        uint _0;
+        uint _1 = a[1];
+        uint h__ = a[2];
+        uint _[2] memory a1;
+        uint _h;
+        uint h__;
+        uint h1 = a[3];
+        uint a0___;
+        uint b;
+        uint a;
+        uint c;
+        uint b_;
+        uint b1 = a1[0];
+        uint a0__ = a[0];
+        uint _0___ = b1 - b;
+        uint h___ = b1 - 1;
+        uint a_ = 25832 + 1;
+        uint _11 = 69271461;
+        uint b1_;
+        uint b0;
+        uint h1_;
+        uint a0____;
+        uint b1_;
+        uint h0;
+        uint a0___;
+        uint _0____;
+        uint h___;
+        uint a_ = 25832 + 1;
+        uint _1__ = a[1];
+        uint h____ = 139

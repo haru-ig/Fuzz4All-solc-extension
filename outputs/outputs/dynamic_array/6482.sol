@@ -1,0 +1,14 @@
+pragma solidity ^0.8.0;
+address payable a = payable(0);
+address payable b = payable(address(0));
+address payable c = payable(bytes32(0));
+address payable d = payable(200);
+address payable e = payable(new uint256());
+address payable f = payable.data;
+address payable g = payable.calldata();
+emit c();
+emit d();
+emit e();
+emit f(address(this));
+emit f(0);
+emit g();

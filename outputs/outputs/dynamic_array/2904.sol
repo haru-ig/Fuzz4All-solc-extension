@@ -1,0 +1,17 @@
+pragma solidity ^0.8.0;
+contract SymbolicEquality_ArrayMutations22_2 {
+    uint[5] a;
+    constructor () public {
+
+        var l = 56462234;
+        l++;
+        var h = (l + 2) * (l + 4);
+        a[h] = l + 4 * l;
+    }
+    function fct(uint[5] memory h) public {
+        uint l;
+
+        var h = (l + 2) * (l + 4);
+        a[h] = l + 4 * l;
+    }
+}

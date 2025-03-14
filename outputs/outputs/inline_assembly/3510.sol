@@ -1,0 +1,45 @@
+pragma solidity ^0.8.0;
+contract CallersFirstContract {
+    uint constant ZERO = 0;
+    uint constant ONE = 1;
+    uint constant TWO = 2;
+    modifier onlyUpdateCallerFirst (address _oldSetter, uint _oldValue) {
+        assert(msg.sender == _oldSetter);
+        _oldValue += ONE;
+        _oldValue += TWO;
+        _oldValue -= ONE;
+        _oldValue -= ZERO;
+        _oldValue -= TWO;
+        _oldValue += ONE;
+        _oldValue -= ONE;
+        _oldValue += ONE;
+        _oldValue += ONE;
+        _oldValue = _oldValue + _oldValue;
+        _oldValue = _oldValue + _oldValue;
+        _oldValue--;
+        _oldValue -= ONE;
+        _oldValue = _oldValue  - _oldValue;
+        _oldValue = _oldValue + _oldValue;
+        _oldValue--;
+        _oldValue = _oldValue - _oldValue;
+        _oldValue = _oldValue + _oldValue;
+        _oldValue = _oldValue - _oldValue;
+        _oldValue = _oldValue + _oldValue;
+        _oldValue = _oldValue - _oldValue;
+        _oldValue = _oldValue + _oldValue;
+        _oldValue *= ONE;
+        _oldValue = _oldValue + _oldValue;
+        _oldValue = _oldValue - _oldValue;
+        _oldValue = _oldValue + _oldValue;
+        _oldValue *= ONE;
+        _oldValue = _oldValue - _oldValue;
+        _oldValue = _oldValue + ONE;
+        _oldValue *= ONE;
+        _oldValue = _oldValue  - _oldValue;
+        _oldValue = _oldValue - ONE;
+        _oldValue = _oldValue  + _oldValue;
+        _oldValue -= ONE;
+        _oldValue = _oldValue * ONE;
+        _oldValue++;
+        _oldValue = _oldValue - _oldValue;
+        _oldValue

@@ -1,0 +1,73 @@
+pragma solidity ^0.8.0;
+contract Solv0To8 {
+    uint8 public a;
+    uint8 public b;
+    uint8 public c;
+    uint8 public d;
+    uint8 public e;
+    uint8 public f;
+    uint8 public g;
+    uint8 public h;
+    uint8 public i;
+    uint8 public j;
+    uint8 public k;
+    uint8 public maxA;
+    uint8 public maxB;
+    uint8 public maxC;
+    uint8 public maxD;
+    uint8 public maxE;
+    uint8 public maxF;
+    uint8 public maxG;
+    uint8 public maxH;
+    uint8 public maxI;
+    uint8 public maxJ;
+    uint8 public maxK;
+    constructor() public {
+        a = 4;
+        b = 3;
+        c = 2;
+        d = 1;
+        e = 0;
+        f = 7;
+        g = 6;
+        h = 5;
+        i = 4;
+        j = 3;
+        k = 2;
+        maxA = 4;
+        maxB = 3;
+        maxC = 2;
+        maxD = 1;
+        maxE = 0;
+        maxF = 7;
+        maxG = 6;
+        maxH = 5;
+        maxI = 4;
+        maxJ = 3;
+        maxK = 2;
+    }
+    fallback() external payable {
+        a = a + 1;
+        b = b + 4;
+        c = c + 3;
+        d = d + 2;
+        e = e + 1;
+        f = f + 6;
+        g = g + 5;
+        h = h + 4;
+        i = i + 3;
+        j = j + 2;
+        k = k + 1;
+        maxA = maxA + 1;
+        maxB = maxB + 4;
+        maxC = maxC + 3;
+        maxD = maxD + 2;
+        maxE = maxE + 1;
+        maxF = maxF + 6;
+        maxG = maxG + 5;
+        maxH = maxH + 4;
+        maxI = maxI + 3;
+        maxJ = maxJ + 2;
+        maxK = maxK + 1;
+    }
+}

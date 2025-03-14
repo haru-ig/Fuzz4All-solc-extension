@@ -1,0 +1,2 @@
+pragma solidity ^0.8.0;
+contract SafeMath { function add(uint256 a, uint256 b) internal pure returns (uint256) { (uint256 c, ) = add(uint256(a), uint256(b)); return c; } function sub(uint256 a, uint256 b) internal pure returns (uint256) { unchecked { return sub(uint256(b), uint256(a)), } } function mul(uint256 a, uint256 b) internal pure returns (uint256) { (uint256 c, ) = mul(uint256(a), uint256(b)); return c; } function div(uint256 a, uint256 b) internal pure returns (uint256) { unchecked { return div(uint256(b), uint256(a)), } } }

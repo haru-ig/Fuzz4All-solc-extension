@@ -1,0 +1,30 @@
+pragma solidity ^0.8.0;
+contract SemanticEquivalence_MutatedAssignment_bb7b0720cbfc6fe616f99cf133944475
+{
+}
+contract SemanticEquality_MutatedAssignment_dc2d37751b4cd20ab43b9e6a592f87a5
+{
+}
+contract SemanticEquivalence_MutatedAssignment_8acfcf55f9490898278bb81e65c79293
+{
+}
+contract SemanticEquality_MutatedAssignment_57f2534036551945f42c6649f1d6d0ce
+{
+}
+pragma solidity ^0.8.0;
+contract SemanticEquivalence_DynamicallySizedAssignment1_b46ce7be02e85a3a420e48ed917b3990
+{
+}
+contract SemanticEquivalence_DynamicallySizedAssignment1_089ca39de33f004529b831f7b996fd03
+{
+}
+contract SemanticEquivalence_DynamicallySizedAssignment1_19236f60ac1e92a5219f7a52525a477c
+{
+}
+contract SemanticEquivalence_DynamicallySizedAssignment1_060f6c4f4d401fa50eb373d8a559c480
+{
+}
+contract SemanticEquality_DynamicallySizedAssignment_2982c7f56da3cf8d248976f4b55f0c33
+{
+}
+contract SemanticEquality_DynamicallySizedAssignment_7c611e188cb127e31c

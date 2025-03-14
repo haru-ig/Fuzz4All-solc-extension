@@ -1,0 +1,23 @@
+pragma solidity ^0.8.0;
+contract Test02 {
+    struct MyStruct {
+        uint8 MyUint8;
+    }
+
+    uint256 myStruct02;
+
+    event TestEvent(uint256 MyUint256);
+
+    function Test02() public {
+        myStruct02 = 0x111111111111111111111111111111111111111111111111111111111111111111111111;
+    }
+
+    function testMe() public {
+        uint256 MyUint256 = 0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001;
+        emit TestEvent(MyUint256);
+    }
+
+    function testMe2() public {
+        uint8 MyUint8 = 0xFF;
+        uint256 MyUint256 = 0xFEDCBAD987654321018876EDCBB98743200000000000000000000000000000000000000000000000000000000000000000000;
+        emit

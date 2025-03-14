@@ -1,0 +1,20 @@
+pragma solidity ^0.8.0;
+contract AA { function f(uint256 a) public view {assert(a > 0);} }
+contract AB { function f(uint256 a) public view {assert(a > 0);} }
+contract AC { function f(uint256 a) public view {a += 2;} }
+contract BC4 { function f(uint256 a) public view {a += 2;} }
+contract CC4 { function f(uint256 a) public view {a += 2;} }
+contract AB { function f(uint256 a) public view {assert(a > 0);} }
+contract BC4 { function f(uint256 a) public view {a += 2;} }
+contract CC4 { function f(uint256 a) public view {a += 2;} }
+contract AA { function f(uint256 a) public view {assert(a > 0);} }
+contract Aa { function f(uint256 a) public view {aa += 2;} }
+contract Ab { function f(uint256 a) public view {ab += 2;} }
+contract Ac { function f(uint256 a) public view {ac += 2;} }
+contract Bc4 { function f(uint256 a) public view {bc4 += 2;} }
+contract Cc4 { function f(uint256 a) public view {cc4 += 2;} }
+contract Aa { function f(uint256 a) public view {aa += 2;} }
+contract Ab { function f(uint256 a) public view {ab += 2;} }
+contract Ac { function f(uint256 a) public view {ac += 2;} }
+contract Bc4 { function f(uint256 a) public view {bc4 += 2;} }
+contract Cc4 { function f(uint256 a) public view {cc4 += 2;} }

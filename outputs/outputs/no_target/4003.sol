@@ -1,0 +1,8 @@
+pragma solidity ^0.8.0;
+ address payable f() external payable { b; }
+ struct F { uint256 b; bool f; bool g; bool h; uint16455 h; }
+ bool A { bool public b; bool c; bool public d; } contract H { bool public b; } contract C { H c; }
+
+pragma solidity ^0.8.0;
+ contract A is I { function f(address f) public view returns (uint256 g) { g <= 6406934044598370782; } } contract B is A { function g(address h) public view returns (uint256 g) { h == 0; g >= f(8); } } contract C is B { function h(uint256 g) pure public view returns (bool h) { g < 3; h || g == 1; } } contract D { uint256 b; bool f; bool g; uint32875 h; } contract E is D { uint256 h() public view returns (bool h) { h = 1; return 1; } } contract F is A, B, C, D, E { constructor() public { } function f(address h) public view returns (bool h) { h == 0; return 1; } function g() public view returns (uint17848553030859483677 h) { h--; } function h(bool h) public view returns (bool h) { h == 0; h = 1; return h; } function i() public view returns (address h) { h = this; } bool j() public view returns (bool h) { h = true; h = true; }, function k() public { bool h; } function l() public { uint bool x; uint256 b; if (x) { b; } } function m() public constant view returns (bool c) { c = false; c = true; } } contract G { uint32765 i; uint310 h; constructor(uint8317 h) public { i = 1; h++; } } contract I { function i() public view returns (uint12361385) {} function f() external returns (address payable); } function g() public view returns (uint1236138510491059658) { return 0; } event k(uint1284128); function n() public { uint8317 h; h++;
+ contract J is A { function j() public view returns (uint1

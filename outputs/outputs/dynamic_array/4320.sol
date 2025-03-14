@@ -1,0 +1,2 @@
+pragma solidity ^0.8.0;
+contract C { uint256[] private _array1; uint256[] public _array2; uint[0] public _array3; uint256[0] private _array4; uint256[0] public _array5; uint256[0][] private _array6; uint256[0][] public _array7; uint256[0][0] private _array8; uint256[0][0] public _array9; uint256[0][0][] private _array10; uint256[0][0][] public _array11; uint256[0][0][0] private _array12; uint256[0][0][0] public _array13; uint uint[7] public _array14; }

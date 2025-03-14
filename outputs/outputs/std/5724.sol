@@ -1,0 +1,47 @@
+pragma solidity ^0.8.0;
+contract Memory6{
+    uint public p0;
+    uint public p1;
+    uint public p2;
+    uint public p3;
+    uint public p4;
+    uint public p5;
+    uint public p6;
+    uint public p7;
+    uint public p8;
+    uint public p9;
+    uint public p10;
+    uint public p11;
+    uint public p12;
+    uint public p13;
+    uint public p14;
+    uint public p15;
+    uint public p16;
+    uint public p17;
+    uint public p18;
+    uint public p19;
+    uint public p20;
+    uint public p21;
+    uint public p22;
+    uint public p23;
+    uint public p24;
+    uint public p25;
+    uint public p26;
+    uint public p27;
+    uint public p28;
+    uint public p29;
+    constructor(){
+        p0 = memoryGetStorageSize();
+        p1 = p0 + memoryGetMemorySize();
+        p2 = p1 + memoryGetMemorySize();
+        p3 = p2 + memoryGetMemorySize();
+        p4 = p3 + p2 + memoryGetMemorySize();
+        p5 = p4 + p2 + memoryGetMemorySize();
+        p6 = p5 + p2 + memoryGetMemorySize();
+        p7 = p6 + p2 + memoryGetMemorySize();
+        p8 = p7 + p2 + memoryGetMemorySize();
+        p9 = p8 + p2 + memoryGetMemorySize();
+        p10 = p9 + p2 + memoryGetMemorySize();
+        p11 = p10 + p2 + memoryGetMemorySize();
+        p12 = p11 + p2 + memoryGetMemorySize();
+        p13 = p12 + p2 +

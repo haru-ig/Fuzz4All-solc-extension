@@ -1,0 +1,50 @@
+pragma solidity ^0.8.0;
+contract SemanticSimilar10 {
+  uint x = 1;
+  uint x2;
+  uint x3;
+  x = 2;
+  x = 0;
+  x = 3;
+  x = 2;
+  function f() public {
+    uint b = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 0;
+    x2 = 2;
+    x2 = x + 2;
+    x2 = x;
+    x2 = x;
+    x2 = x;
+    x2 = x2 + 2;
+    x2 = x + 1;
+    x2 = x + 1;
+    x2 = x + 1;
+    x2 = x3 / 2;
+    x3 /= 2;
+    x = 0;
+    x = 1;
+    x = 0;
+    x = 2;
+    x = x + 2;
+    x = x * 2;
+    x = x + 2;
+    x3 = x / 2;
+    x3 = x + 3;
+    x2 = x / 2;
+    x2 = x / 2;
+  }
+}

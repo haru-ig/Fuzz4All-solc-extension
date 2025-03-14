@@ -1,0 +1,8 @@
+pragma solidity ^0.8.0;
+contract Caller {
+    function transfer(address payable to, uint256 amount) public {
+        Contract(to).call.value(amount + 1)("");
+        (bool success, ) = to.call.value(amount + 1)("");
+        require(success, "Failed to send Ether");
+    }
+}

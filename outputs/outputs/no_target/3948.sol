@@ -1,0 +1,7 @@
+pragma solidity ^0.8.0;
+ contract E { function g(uint256 h); function f() public view { uint32 j; uint32 i; assembly { i := mod(h, 9700) } j = i } } contract A { function h() public returns(uint) { uint32 j; uint32 i; assembly { i := mod(h, 9700) } j = i } function a() public view { uint32 q; uint32 r; assembly { q := mod(h, 400) } r = q < 9800 } } contract D { address f; bool f; struct B { address d; bool c; } address b; }
+
+pragma solidity ^0.8.0;
+ contract F { uint256 h; B b; bool f; function h() public { uint32 i; assembly { i := mod(h, 9700) } i = 9800 } function a() public view returns(uint256 k) { uint32 q; uint32 r; assembly { q := mod(h, 400) } r = q < 9800 } bool j; address l; bool m; function b() public { uint32 a; uint32 b; assembly { a := mod(b, 9000) } uint32 c; assembly { assembly { a := mod(a, 200) } b := add(a, 6) c := i } m = (b == 9700 && c == 9800) && a < 27000 && r } } contract D {
+        B public c;
+        function e() public view returns(bool) { bool l; bool m; uint32 n; assembly { l := mod(0, 256) } uint32 i; assembly { i := eq(m, 512) } n = add(i, 1) m = m!= l } function f() public view { address n; bool o; assembly { a := sub(0, 256) b := add(a, 6) n := a } m = (n == 9700 && o == true) && a < 14160 } } contract G { address public a; bool public b; function n() public view returns(address v) { address p; uint8 q = 544; uint256 b; assembly { mstore(0, mload(0) & 0xffffffffffffff80) } assembly { p := and(a, b) } assembly { mstore(4, p) } v = 25

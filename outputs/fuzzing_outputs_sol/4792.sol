@@ -1,0 +1,12 @@
+pragma solidity ^0.8.0;
+contract Mutate {
+    function update() public {
+        uint oldInt = 42;
+        uint newInt = oldInt + oldInt;
+    }
+}
+contract Receive {
+    function updateWithReceive() public {
+        require(msg.value == 7);
+    }
+}

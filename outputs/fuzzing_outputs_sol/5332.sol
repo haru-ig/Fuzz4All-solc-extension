@@ -1,0 +1,52 @@
+pragma solidity ^0.8.0;
+contract mapmap
+{
+  mapping(address => uint) map1;
+  function f(bool b) private {
+      map1[0x1111111111111111111111111111111111111111] += 1;
+      map1[address(1)] += 1;
+      map1[address(1)] += 3;
+      map1[address(1)] += 5;
+      map1[address(1)] += 7;
+      map1[address(1)] += 9;
+      map1[address(1)] += 11;
+      map1[address(1)] += 13;
+      map1[address(1)] += 15;
+      map1[address(1)] += 17;
+      map1[address(1)] += 19;
+      map1[address(1)] += 21;
+      map1[address(1)] += 23;
+      map1[address(1)] += 25;
+      map1[address(1)] += 27;
+      map1[address(1)] += 29;
+      map1[address(1)] += 31;
+      map1[address(1)] += 33;
+      map1[address(1)] += 35;
+      map1[address(1)] += 37;
+      map1[address(1)] += 39;
+      map1[address(1)] += 41;
+      map1[address(1)] += 43;
+      map1[address(1)] += 45;
+      map1[address(1)] += 47;
+      map1[address(1)] += 49;
+      map1[address(1)] += 51;
+      map1[address(1)] += 53;
+      map1[address(1)] += 55;
+      map1[address(1)] += 57;
+      map1[address(1)] += 59;
+      map1[address(1)] += 60;
+      map1[address(1)] += 61;
+      map1[address(1)] += 62;
+      map1[address(1)] += 64;
+      map1[address(1)] += 66;
+      map1[address(1)] += 68;
+      map1[address(1)] += 70;
+      map1[address(1)] += 72;
+      map1[address(1)] += 74;
+      map1[address(1)] += 76;
+      map1[address(1)] += 78;
+      map1[address(1)] += 80;
+      map1[address(1)] += 82;
+      map1[address(1)] += 84;
+      map1[address(1)] += 86;
+      map1[address

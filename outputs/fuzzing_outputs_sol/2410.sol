@@ -1,0 +1,11 @@
+pragma solidity ^0.8.0;
+contract Caller {
+  function call2() public payable {
+  }
+}
+
+pragma solidity ^0.8.0;
+contract Caller {
+  function() public payable receive () {
+  }
+}

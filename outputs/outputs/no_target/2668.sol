@@ -1,0 +1,2 @@
+pragma solidity ^0.8.0;
+contract semantiskind3749 { uint8 internal s3; uint internal s10; uint s11; uint internal s9; uint s7; uint8 internal s4; uint8 s5; uint16 internal s2; uint16 private s6; uint private s12; uint16 internal s16; uint64 internal s13; uint8 internal s14; uint s8; uint16 s15; uint s18; uint internal s23; uint internal s32; uint8 internal s27; uint internal s29; uint private s54; uint256 internal s17; uint32 internal s19; uint32[] s22; uint[] s30; uint[] s31; uint[] s33; uint[] s36; uint[] s37; uint[] s38; uint32[] s60; uint[] s118; uint internal s163; }

@@ -1,0 +1,52 @@
+pragma solidity ^0.8.0;
+library E {
+    struct A {
+        uint256 x;
+        uint256[10] y;
+    }
+
+    function call(A memory x) internal pure {
+        assembly {push x}
+    }
+}
+
+pragma solidity ^0.8.0;
+contract T09 {
+    enum A {
+        A1,
+        A2,
+        A3,
+        A4,
+        A5,
+        A6,
+        A7,
+        A8,
+        A9,
+        A10,
+        A11,
+        A12,
+        A13,
+        A14,
+        A15,
+        A16,
+        A17,
+        A18,
+        A19,
+        A20,
+        A21,
+        A22,
+        A23,
+    }
+    mapping (A => uint8) x;
+    event E(uint8);
+    A[] a;
+    function f() public view returns (A[] memory) {
+        a.length;
+    }
+    function g() public {
+        a.length;
+    }
+    function h() public view returns (A[] memory) {
+        a.length;
+    }
+}

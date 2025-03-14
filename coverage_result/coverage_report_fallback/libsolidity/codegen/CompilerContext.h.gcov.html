@@ -1,0 +1,474 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - final_coverage.info - libsolidity/codegen/CompilerContext.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">libsolidity/codegen</a> - CompilerContext.h<span style="font-size: 80%;"> (source / <a href="CompilerContext.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">final_coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">55</td>
+            <td class="headerCovTableEntry">57</td>
+            <td class="headerCovTableEntryHi">96.5 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2025-01-29 08:23:02</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">46</td>
+            <td class="headerCovTableEntry">47</td>
+            <td class="headerCovTableEntryHi">97.9 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<a name="2"><span class="lineNum">       2 </span>            :         This file is part of solidity.</a>
+<a name="3"><span class="lineNum">       3 </span>            : </a>
+<a name="4"><span class="lineNum">       4 </span>            :         solidity is free software: you can redistribute it and/or modify</a>
+<a name="5"><span class="lineNum">       5 </span>            :         it under the terms of the GNU General Public License as published by</a>
+<a name="6"><span class="lineNum">       6 </span>            :         the Free Software Foundation, either version 3 of the License, or</a>
+<a name="7"><span class="lineNum">       7 </span>            :         (at your option) any later version.</a>
+<a name="8"><span class="lineNum">       8 </span>            : </a>
+<a name="9"><span class="lineNum">       9 </span>            :         solidity is distributed in the hope that it will be useful,</a>
+<a name="10"><span class="lineNum">      10 </span>            :         but WITHOUT ANY WARRANTY; without even the implied warranty of</a>
+<a name="11"><span class="lineNum">      11 </span>            :         MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</a>
+<a name="12"><span class="lineNum">      12 </span>            :         GNU General Public License for more details.</a>
+<a name="13"><span class="lineNum">      13 </span>            : </a>
+<a name="14"><span class="lineNum">      14 </span>            :         You should have received a copy of the GNU General Public License</a>
+<a name="15"><span class="lineNum">      15 </span>            :         along with solidity.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</a>
+<a name="16"><span class="lineNum">      16 </span>            : */</a>
+<a name="17"><span class="lineNum">      17 </span>            : // SPDX-License-Identifier: GPL-3.0</a>
+<a name="18"><span class="lineNum">      18 </span>            : /**</a>
+<a name="19"><span class="lineNum">      19 </span>            :  * @author Christian &lt;c@ethdev.com&gt;</a>
+<a name="20"><span class="lineNum">      20 </span>            :  * @date 2014</a>
+<a name="21"><span class="lineNum">      21 </span>            :  * Utilities for the solidity compiler.</a>
+<a name="22"><span class="lineNum">      22 </span>            :  */</a>
+<a name="23"><span class="lineNum">      23 </span>            : </a>
+<a name="24"><span class="lineNum">      24 </span>            : #pragma once</a>
+<a name="25"><span class="lineNum">      25 </span>            : </a>
+<a name="26"><span class="lineNum">      26 </span>            : #include &lt;libsolidity/ast/ASTAnnotations.h&gt;</a>
+<a name="27"><span class="lineNum">      27 </span>            : #include &lt;libsolidity/ast/ASTForward.h&gt;</a>
+<a name="28"><span class="lineNum">      28 </span>            : #include &lt;libsolidity/ast/Types.h&gt;</a>
+<a name="29"><span class="lineNum">      29 </span>            : #include &lt;libsolidity/codegen/ABIFunctions.h&gt;</a>
+<a name="30"><span class="lineNum">      30 </span>            : </a>
+<a name="31"><span class="lineNum">      31 </span>            : #include &lt;libsolidity/interface/DebugSettings.h&gt;</a>
+<a name="32"><span class="lineNum">      32 </span>            : #include &lt;libsolidity/interface/OptimiserSettings.h&gt;</a>
+<a name="33"><span class="lineNum">      33 </span>            : </a>
+<a name="34"><span class="lineNum">      34 </span>            : #include &lt;libevmasm/Assembly.h&gt;</a>
+<a name="35"><span class="lineNum">      35 </span>            : #include &lt;libevmasm/Instruction.h&gt;</a>
+<a name="36"><span class="lineNum">      36 </span>            : #include &lt;liblangutil/ErrorReporter.h&gt;</a>
+<a name="37"><span class="lineNum">      37 </span>            : #include &lt;liblangutil/EVMVersion.h&gt;</a>
+<a name="38"><span class="lineNum">      38 </span>            : #include &lt;libsolutil/Common.h&gt;</a>
+<a name="39"><span class="lineNum">      39 </span>            : #include &lt;libsolutil/ErrorCodes.h&gt;</a>
+<a name="40"><span class="lineNum">      40 </span>            : </a>
+<a name="41"><span class="lineNum">      41 </span>            : #include &lt;libyul/AsmAnalysisInfo.h&gt;</a>
+<a name="42"><span class="lineNum">      42 </span>            : #include &lt;libyul/backends/evm/EVMDialect.h&gt;</a>
+<a name="43"><span class="lineNum">      43 </span>            : </a>
+<a name="44"><span class="lineNum">      44 </span>            : #include &lt;functional&gt;</a>
+<a name="45"><span class="lineNum">      45 </span>            : #include &lt;ostream&gt;</a>
+<a name="46"><span class="lineNum">      46 </span>            : #include &lt;stack&gt;</a>
+<a name="47"><span class="lineNum">      47 </span>            : #include &lt;queue&gt;</a>
+<a name="48"><span class="lineNum">      48 </span>            : #include &lt;utility&gt;</a>
+<a name="49"><span class="lineNum">      49 </span>            : #include &lt;limits&gt;</a>
+<a name="50"><span class="lineNum">      50 </span>            : </a>
+<a name="51"><span class="lineNum">      51 </span>            : namespace solidity::frontend</a>
+<a name="52"><span class="lineNum">      52 </span>            : {</a>
+<a name="53"><span class="lineNum">      53 </span>            : </a>
+<a name="54"><span class="lineNum">      54 </span>            : class Compiler;</a>
+<a name="55"><span class="lineNum">      55 </span>            : </a>
+<a name="56"><span class="lineNum">      56 </span>            : /**</a>
+<a name="57"><span class="lineNum">      57 </span>            :  * Context to be shared by all units that compile the same contract.</a>
+<a name="58"><span class="lineNum">      58 </span>            :  * It stores the generated bytecode and the position of identifiers in memory and on the stack.</a>
+<a name="59"><span class="lineNum">      59 </span>            :  */</a>
+<a name="60"><span class="lineNum">      60 </span>            : class CompilerContext</a>
+<a name="61"><span class="lineNum">      61 </span>            : {</a>
+<a name="62"><span class="lineNum">      62 </span>            : public:</a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">       7400 :         explicit CompilerContext(</span></a>
+<a name="64"><span class="lineNum">      64 </span>            :                 langutil::EVMVersion _evmVersion,</a>
+<a name="65"><span class="lineNum">      65 </span>            :                 RevertStrings _revertStrings,</a>
+<a name="66"><span class="lineNum">      66 </span>            :                 CompilerContext* _runtimeContext = nullptr</a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">       7400 :         ):</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">      14800 :                 m_asm(std::make_shared&lt;evmasm::Assembly&gt;(_evmVersion, _runtimeContext != nullptr, std::nullopt, std::string{})),</span></a>
+<a name="69"><span class="lineNum">      69 </span>            :                 m_evmVersion(_evmVersion),</a>
+<a name="70"><span class="lineNum">      70 </span>            :                 m_revertStrings(_revertStrings),</a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :                 m_reservedMemory{0},</span></a>
+<a name="72"><span class="lineNum">      72 </span>            :                 m_runtimeContext(_runtimeContext),</a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">       7400 :                 m_abiFunctions(m_evmVersion, m_revertStrings, m_yulFunctionCollector),</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">      22200 :                 m_yulUtilFunctions(m_evmVersion, m_revertStrings, m_yulFunctionCollector)</span></a>
+<a name="75"><span class="lineNum">      75 </span>            :         {</a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">       7400 :                 if (m_runtimeContext)</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">       3700 :                         m_runtimeSub = size_t(m_asm-&gt;newSub(m_runtimeContext-&gt;m_asm).data());</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">       7400 :         }</span></a>
+<a name="79"><span class="lineNum">      79 </span>            : </a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">       5144 :         langutil::EVMVersion const&amp; evmVersion() const { return m_evmVersion; }</span></a>
+<a name="81"><span class="lineNum">      81 </span>            : </a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">      18899 :         void setUseABICoderV2(bool _value) { m_useABICoderV2 = _value; }</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">      10030 :         bool useABICoderV2() const { return m_useABICoderV2; }</span></a>
+<a name="84"><span class="lineNum">      84 </span>            : </a>
+<a name="85"><span class="lineNum">      85 </span>            :         void addStateVariable(VariableDeclaration const&amp; _declaration, u256 const&amp; _storageOffset, unsigned _byteOffset);</a>
+<a name="86"><span class="lineNum">      86 </span>            :         void addImmutable(VariableDeclaration const&amp; _declaration);</a>
+<a name="87"><span class="lineNum">      87 </span>            : </a>
+<a name="88"><span class="lineNum">      88 </span>            :         /// @returns the reserved memory for storing the value of the immutable @a _variable during contract creation.</a>
+<a name="89"><span class="lineNum">      89 </span>            :         size_t immutableMemoryOffset(VariableDeclaration const&amp; _variable) const;</a>
+<a name="90"><span class="lineNum">      90 </span>            :         /// @returns a list of slot names referring to the stack slots of an immutable variable.</a>
+<a name="91"><span class="lineNum">      91 </span>            :         static std::vector&lt;std::string&gt; immutableVariableSlotNames(VariableDeclaration const&amp; _variable);</a>
+<a name="92"><span class="lineNum">      92 </span>            : </a>
+<a name="93"><span class="lineNum">      93 </span>            :         /// @returns the reserved memory and resets it to mark it as used.</a>
+<a name="94"><span class="lineNum">      94 </span>            :         size_t reservedMemory();</a>
+<a name="95"><span class="lineNum">      95 </span>            : </a>
+<a name="96"><span class="lineNum">      96 </span>            :         void addVariable(VariableDeclaration const&amp; _declaration, unsigned _offsetToCurrent = 0);</a>
+<a name="97"><span class="lineNum">      97 </span>            :         void removeVariable(Declaration const&amp; _declaration);</a>
+<a name="98"><span class="lineNum">      98 </span>            :         /// Removes all local variables currently allocated above _stackHeight.</a>
+<a name="99"><span class="lineNum">      99 </span>            :         void removeVariablesAboveStackHeight(unsigned _stackHeight);</a>
+<a name="100"><span class="lineNum">     100 </span>            :         /// Returns the number of currently allocated local variables.</a>
+<a name="101"><span class="lineNum">     101 </span>            :         unsigned numberOfLocalVariables() const;</a>
+<a name="102"><span class="lineNum">     102 </span>            : </a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">       7387 :         void setOtherCompilers(std::map&lt;ContractDefinition const*, std::shared_ptr&lt;Compiler const&gt;&gt; const&amp; _otherCompilers) { m_otherCompilers = _otherCompilers; }</span></a>
+<a name="104"><span class="lineNum">     104 </span>            :         std::shared_ptr&lt;evmasm::Assembly&gt; compiledContract(ContractDefinition const&amp; _contract) const;</a>
+<a name="105"><span class="lineNum">     105 </span>            :         std::shared_ptr&lt;evmasm::Assembly&gt; compiledContractRuntime(ContractDefinition const&amp; _contract) const;</a>
+<a name="106"><span class="lineNum">     106 </span>            : </a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">      13588 :         void setStackOffset(int _offset) { m_asm-&gt;setDeposit(_offset); }</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">      23084 :         void adjustStackOffset(int _adjustment) { m_asm-&gt;adjustDeposit(_adjustment); }</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">      63341 :         unsigned stackHeight() const { solAssert(m_asm-&gt;deposit() &gt;= 0, &quot;&quot;); return unsigned(m_asm-&gt;deposit()); }</span></a>
+<a name="110"><span class="lineNum">     110 </span>            : </a>
+<a name="111"><span class="lineNum">     111 </span>            :         bool isLocalVariable(Declaration const* _declaration) const;</a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">       3501 :         bool isStateVariable(Declaration const* _declaration) const { return m_stateVariables.count(_declaration) != 0; }</span></a>
+<a name="113"><span class="lineNum">     113 </span>            : </a>
+<a name="114"><span class="lineNum">     114 </span>            :         /// @returns the entry label of the given function and creates it if it does not exist yet.</a>
+<a name="115"><span class="lineNum">     115 </span>            :         evmasm::AssemblyItem functionEntryLabel(Declaration const&amp; _declaration);</a>
+<a name="116"><span class="lineNum">     116 </span>            :         /// @returns the entry label of the given function. Might return an AssemblyItem of type</a>
+<a name="117"><span class="lineNum">     117 </span>            :         /// UndefinedItem if it does not exist yet.</a>
+<a name="118"><span class="lineNum">     118 </span>            :         evmasm::AssemblyItem functionEntryLabelIfExists(Declaration const&amp; _declaration) const;</a>
+<a name="119"><span class="lineNum">     119 </span>            :         /// @returns the function that overrides the given declaration from the most derived class just</a>
+<a name="120"><span class="lineNum">     120 </span>            :         /// above _base in the current inheritance hierarchy.</a>
+<a name="121"><span class="lineNum">     121 </span>            :         FunctionDefinition const&amp; superFunction(FunctionDefinition const&amp; _function, ContractDefinition const&amp; _base);</a>
+<a name="122"><span class="lineNum">     122 </span>            :         /// Sets the contract currently being compiled - the most derived one.</a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">       7387 :         void setMostDerivedContract(ContractDefinition const&amp; _contract) { m_mostDerivedContract = &amp;_contract; }</span></a>
+<a name="124"><span class="lineNum">     124 </span>            :         ContractDefinition const&amp; mostDerivedContract() const;</a>
+<a name="125"><span class="lineNum">     125 </span>            : </a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">       5909 :         void setArithmetic(Arithmetic _value) { m_arithmetic = _value; }</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">       3826 :         Arithmetic arithmetic() const { return m_arithmetic; }</span></a>
+<a name="128"><span class="lineNum">     128 </span>            : </a>
+<a name="129"><span class="lineNum">     129 </span>            :         /// @returns the next function in the queue of functions that are still to be compiled</a>
+<a name="130"><span class="lineNum">     130 </span>            :         /// (i.e. that were referenced during compilation but where we did not yet generate code for).</a>
+<a name="131"><span class="lineNum">     131 </span>            :         /// Returns nullptr if the queue is empty. Does not remove the function from the queue,</a>
+<a name="132"><span class="lineNum">     132 </span>            :         /// that will only be done by startFunction below.</a>
+<a name="133"><span class="lineNum">     133 </span>            :         Declaration const* nextFunctionToCompile() const;</a>
+<a name="134"><span class="lineNum">     134 </span>            :         /// Resets function specific members, inserts the function entry label and marks the function</a>
+<a name="135"><span class="lineNum">     135 </span>            :         /// as &quot;having code&quot;.</a>
+<a name="136"><span class="lineNum">     136 </span>            :         void startFunction(Declaration const&amp; _function);</a>
+<a name="137"><span class="lineNum">     137 </span>            : </a>
+<a name="138"><span class="lineNum">     138 </span>            :         /// Appends a call to the named low-level function and inserts the generator into the</a>
+<a name="139"><span class="lineNum">     139 </span>            :         /// list of low-level-functions to be generated, unless it already exists.</a>
+<a name="140"><span class="lineNum">     140 </span>            :         /// Note that the generator should not assume that objects are still alive when it is called,</a>
+<a name="141"><span class="lineNum">     141 </span>            :         /// unless they are guaranteed to be alive for the whole run of the compiler (AST nodes, for example).</a>
+<a name="142"><span class="lineNum">     142 </span>            :         void callLowLevelFunction(</a>
+<a name="143"><span class="lineNum">     143 </span>            :                 std::string const&amp; _name,</a>
+<a name="144"><span class="lineNum">     144 </span>            :                 unsigned _inArgs,</a>
+<a name="145"><span class="lineNum">     145 </span>            :                 unsigned _outArgs,</a>
+<a name="146"><span class="lineNum">     146 </span>            :                 std::function&lt;void(CompilerContext&amp;)&gt; const&amp; _generator</a>
+<a name="147"><span class="lineNum">     147 </span>            :         );</a>
+<a name="148"><span class="lineNum">     148 </span>            : </a>
+<a name="149"><span class="lineNum">     149 </span>            :         /// Appends a call to a yul function and registers the function as externally used.</a>
+<a name="150"><span class="lineNum">     150 </span>            :         void callYulFunction(</a>
+<a name="151"><span class="lineNum">     151 </span>            :                 std::string const&amp; _name,</a>
+<a name="152"><span class="lineNum">     152 </span>            :                 unsigned _inArgs,</a>
+<a name="153"><span class="lineNum">     153 </span>            :                 unsigned _outArgs</a>
+<a name="154"><span class="lineNum">     154 </span>            :         );</a>
+<a name="155"><span class="lineNum">     155 </span>            : </a>
+<a name="156"><span class="lineNum">     156 </span>            :         /// Returns the tag of the named low-level function and inserts the generator into the</a>
+<a name="157"><span class="lineNum">     157 </span>            :         /// list of low-level-functions to be generated, unless it already exists.</a>
+<a name="158"><span class="lineNum">     158 </span>            :         /// Note that the generator should not assume that objects are still alive when it is called,</a>
+<a name="159"><span class="lineNum">     159 </span>            :         /// unless they are guaranteed to be alive for the whole run of the compiler (AST nodes, for example).</a>
+<a name="160"><span class="lineNum">     160 </span>            :         evmasm::AssemblyItem lowLevelFunctionTag(</a>
+<a name="161"><span class="lineNum">     161 </span>            :                 std::string const&amp; _name,</a>
+<a name="162"><span class="lineNum">     162 </span>            :                 unsigned _inArgs,</a>
+<a name="163"><span class="lineNum">     163 </span>            :                 unsigned _outArgs,</a>
+<a name="164"><span class="lineNum">     164 </span>            :                 std::function&lt;void(CompilerContext&amp;)&gt; const&amp; _generator</a>
+<a name="165"><span class="lineNum">     165 </span>            :         );</a>
+<a name="166"><span class="lineNum">     166 </span>            :         /// Generates the code for missing low-level functions, i.e. calls the generators passed above.</a>
+<a name="167"><span class="lineNum">     167 </span>            :         void appendMissingLowLevelFunctions();</a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">       4047 :         ABIFunctions&amp; abiFunctions() { return m_abiFunctions; }</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">       1898 :         YulUtilFunctions&amp; utilFunctions() { return m_yulUtilFunctions; }</span></a>
+<a name="170"><span class="lineNum">     170 </span>            : </a>
+<a name="171"><span class="lineNum">     171 </span>            :         /// Appends concatenation of all generated Yul functions to the bytecode</a>
+<a name="172"><span class="lineNum">     172 </span>            :         /// and stores the Yul source code to be returned by @a generatedYulUtilityCode.</a>
+<a name="173"><span class="lineNum">     173 </span>            :         /// Should be called exactly once on each context.</a>
+<a name="174"><span class="lineNum">     174 </span>            :         void appendYulUtilityFunctions(OptimiserSettings const&amp; _optimiserSettings);</a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">       7400 :         bool appendYulUtilityFunctionsRan() const { return m_appendYulUtilityFunctionsRan; }</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">       7400 :         std::string const&amp; generatedYulUtilityCode() const { return m_generatedYulUtilityCode; }</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">       2290 :         static std::string yulUtilityFileName() { return &quot;#utility.yul&quot;; }</span></a>
+<a name="178"><span class="lineNum">     178 </span>            : </a>
+<a name="179"><span class="lineNum">     179 </span>            :         /// Returns the distance of the given local variable from the bottom of the stack (of the current function).</a>
+<a name="180"><span class="lineNum">     180 </span>            :         unsigned baseStackOffsetOfVariable(Declaration const&amp; _declaration) const;</a>
+<a name="181"><span class="lineNum">     181 </span>            :         /// If supplied by a value returned by @ref baseStackOffsetOfVariable(variable), returns</a>
+<a name="182"><span class="lineNum">     182 </span>            :         /// the distance of that variable from the current top of the stack.</a>
+<a name="183"><span class="lineNum">     183 </span>            :         unsigned baseToCurrentStackOffset(unsigned _baseOffset) const;</a>
+<a name="184"><span class="lineNum">     184 </span>            :         /// Converts an offset relative to the current stack height to a value that can be used later</a>
+<a name="185"><span class="lineNum">     185 </span>            :         /// with baseToCurrentStackOffset to point to the same stack element.</a>
+<a name="186"><span class="lineNum">     186 </span>            :         unsigned currentToBaseStackOffset(unsigned _offset) const;</a>
+<a name="187"><span class="lineNum">     187 </span>            :         /// @returns pair of slot and byte offset of the value inside this slot.</a>
+<a name="188"><span class="lineNum">     188 </span>            :         std::pair&lt;u256, unsigned&gt; storageLocationOfVariable(Declaration const&amp; _declaration) const;</a>
+<a name="189"><span class="lineNum">     189 </span>            : </a>
+<a name="190"><span class="lineNum">     190 </span>            :         /// Appends a JUMPI instruction to a new tag and @returns the tag</a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">       2554 :         evmasm::AssemblyItem appendConditionalJump() { return m_asm-&gt;appendJumpI().tag(); }</span></a>
+<a name="192"><span class="lineNum">     192 </span>            :         /// Appends a JUMPI instruction to @a _tag</a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">       9001 :         CompilerContext&amp; appendConditionalJumpTo(evmasm::AssemblyItem const&amp; _tag) { m_asm-&gt;appendJumpI(_tag); return *this; }</span></a>
+<a name="194"><span class="lineNum">     194 </span>            :         /// Appends a JUMP to a new tag and @returns the tag</a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">       7538 :         evmasm::AssemblyItem appendJumpToNew() { return m_asm-&gt;appendJump().tag(); }</span></a>
+<a name="196"><span class="lineNum">     196 </span>            :         /// Appends a JUMP to a tag already on the stack</a>
+<a name="197"><span class="lineNum">     197 </span>            :         CompilerContext&amp; appendJump(evmasm::AssemblyItem::JumpType _jumpType = evmasm::AssemblyItem::JumpType::Ordinary);</a>
+<a name="198"><span class="lineNum">     198 </span>            :         /// Appends code to revert with a Panic(uint256) error.</a>
+<a name="199"><span class="lineNum">     199 </span>            :         CompilerContext&amp; appendPanic(util::PanicCode _code);</a>
+<a name="200"><span class="lineNum">     200 </span>            :         /// Appends code to revert with a Panic(uint256) error if the topmost stack element is nonzero.</a>
+<a name="201"><span class="lineNum">     201 </span>            :         CompilerContext&amp; appendConditionalPanic(util::PanicCode _code);</a>
+<a name="202"><span class="lineNum">     202 </span>            :         /// Appends a REVERT(0, 0) call</a>
+<a name="203"><span class="lineNum">     203 </span>            :         /// @param _message is an optional revert message used in debug mode</a>
+<a name="204"><span class="lineNum">     204 </span>            :         CompilerContext&amp; appendRevert(std::string const&amp; _message = &quot;&quot;);</a>
+<a name="205"><span class="lineNum">     205 </span>            :         /// Appends a conditional REVERT-call, either forwarding the RETURNDATA or providing the</a>
+<a name="206"><span class="lineNum">     206 </span>            :         /// empty string. Consumes the condition.</a>
+<a name="207"><span class="lineNum">     207 </span>            :         /// If the current EVM version does not support RETURNDATA, uses REVERT but does not forward</a>
+<a name="208"><span class="lineNum">     208 </span>            :         /// the data.</a>
+<a name="209"><span class="lineNum">     209 </span>            :         /// @param _message is an optional revert message used in debug mode</a>
+<a name="210"><span class="lineNum">     210 </span>            :         CompilerContext&amp; appendConditionalRevert(bool _forwardReturnData = false, std::string const&amp; _message = &quot;&quot;);</a>
+<a name="211"><span class="lineNum">     211 </span>            :         /// Appends a JUMP to a specific tag</a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineCov">      14007 :         CompilerContext&amp; appendJumpTo(</span></a>
+<a name="213"><span class="lineNum">     213 </span>            :                 evmasm::AssemblyItem const&amp; _tag,</a>
+<a name="214"><span class="lineNum">     214 </span>            :                 evmasm::AssemblyItem::JumpType _jumpType = evmasm::AssemblyItem::JumpType::Ordinary</a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">      14007 :         ) { *m_asm &lt;&lt; _tag.pushTag(); return appendJump(_jumpType); }</span></a>
+<a name="216"><span class="lineNum">     216 </span>            :         /// Appends pushing of a new tag and @returns the new tag.</a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineCov">      21000 :         evmasm::AssemblyItem pushNewTag() { return m_asm-&gt;append(m_asm-&gt;newPushTag()).tag(); }</span></a>
+<a name="218"><span class="lineNum">     218 </span>            :         /// @returns a new tag without pushing any opcodes or data</a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineCov">      15827 :         evmasm::AssemblyItem newTag() { return m_asm-&gt;newTag(); }</span></a>
+<a name="220"><span class="lineNum">     220 </span>            :         /// @returns a new tag identified by name.</a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineCov">      12514 :         evmasm::AssemblyItem namedTag(std::string const&amp; _name, size_t _params, size_t _returns, std::optional&lt;uint64_t&gt; _sourceID)</span></a>
+<a name="222"><span class="lineNum">     222 </span>            :         {</a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">      12514 :                 return m_asm-&gt;namedTag(_name, _params, _returns, _sourceID);</span></a>
+<a name="224"><span class="lineNum">     224 </span>            :         }</a>
+<a name="225"><span class="lineNum">     225 </span>            :         /// Adds a subroutine to the code (in the data section) and pushes its size (via a tag)</a>
+<a name="226"><span class="lineNum">     226 </span>            :         /// on the stack. @returns the pushsub assembly item.</a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          1 :         evmasm::AssemblyItem addSubroutine(evmasm::AssemblyPointer const&amp; _assembly) { return m_asm-&gt;appendSubroutine(_assembly); }</span></a>
+<a name="228"><span class="lineNum">     228 </span>            :         /// Pushes the size of the subroutine.</a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">       3730 :         void pushSubroutineSize(size_t _subRoutine) { m_asm-&gt;pushSubroutineSize(_subRoutine); }</span></a>
+<a name="230"><span class="lineNum">     230 </span>            :         /// Pushes the offset of the subroutine.</a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineCov">       3700 :         void pushSubroutineOffset(size_t _subRoutine) { m_asm-&gt;pushSubroutineOffset(_subRoutine); }</span></a>
+<a name="232"><span class="lineNum">     232 </span>            :         /// Pushes the size of the final program</a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineCov">        448 :         void appendProgramSize() { m_asm-&gt;appendProgramSize(); }</span></a>
+<a name="234"><span class="lineNum">     234 </span>            :         /// Adds data to the data section, pushes a reference to the stack</a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">          3 :         evmasm::AssemblyItem appendData(bytes const&amp; _data) { return m_asm-&gt;append(_data); }</span></a>
+<a name="236"><span class="lineNum">     236 </span>            :         /// Appends the address (virtual, will be filled in by linker) of a library.</a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 :         void appendLibraryAddress(std::string const&amp; _identifier) { m_asm-&gt;appendLibraryAddress(_identifier); }</span></a>
+<a name="238"><span class="lineNum">     238 </span>            :         /// Appends an immutable variable. The value will be filled in by the constructor.</a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">         47 :         void appendImmutable(std::string const&amp; _identifier) { m_asm-&gt;appendImmutable(_identifier); }</span></a>
+<a name="240"><span class="lineNum">     240 </span>            :         /// Appends an assignment to an immutable variable. Only valid in creation code.</a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">         31 :         void appendImmutableAssignment(std::string const&amp; _identifier) { m_asm-&gt;appendImmutableAssignment(_identifier); }</span></a>
+<a name="242"><span class="lineNum">     242 </span>            :         /// Appends a zero-address that can be replaced by something else at deploy time (if the</a>
+<a name="243"><span class="lineNum">     243 </span>            :         /// position in bytecode is known).</a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">         13 :         void appendDeployTimeAddress() { m_asm-&gt;append(evmasm::PushDeployTimeAddress); }</span></a>
+<a name="245"><span class="lineNum">     245 </span>            :         /// Resets the stack of visited nodes with a new stack having only @c _node</a>
+<a name="246"><span class="lineNum">     246 </span>            :         void resetVisitedNodes(ASTNode const* _node);</a>
+<a name="247"><span class="lineNum">     247 </span>            :         /// Pops the stack of visited nodes</a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">      63611 :         void popVisitedNodes() { m_visitedNodes.pop(); updateSourceLocation(); }</span></a>
+<a name="249"><span class="lineNum">     249 </span>            :         /// Pushes an ASTNode to the stack of visited nodes</a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">      63611 :         void pushVisitedNodes(ASTNode const* _node) { m_visitedNodes.push(_node); updateSourceLocation(); }</span></a>
+<a name="251"><span class="lineNum">     251 </span>            : </a>
+<a name="252"><span class="lineNum">     252 </span>            :         /// Append elements to the current instruction list and adjust @a m_stackOffset.</a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineCov">      56657 :         CompilerContext&amp; operator&lt;&lt;(evmasm::AssemblyItem const&amp; _item) { m_asm-&gt;append(_item); return *this; }</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">     166944 :         CompilerContext&amp; operator&lt;&lt;(evmasm::Instruction _instruction) { m_asm-&gt;append(_instruction); return *this; }</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineCov">      68794 :         CompilerContext&amp; operator&lt;&lt;(u256 const&amp; _value) { m_asm-&gt;append(_value); return *this; }</span></a>
+<a name="256"><span class="lineNum">     256 </span>            :         CompilerContext&amp; operator&lt;&lt;(bytes const&amp; _data) { m_asm-&gt;append(_data); return *this; }</a>
+<a name="257"><span class="lineNum">     257 </span>            : </a>
+<a name="258"><span class="lineNum">     258 </span>            :         /// Appends inline assembly (strict-EVM dialect for the current version).</a>
+<a name="259"><span class="lineNum">     259 </span>            :         /// @param _assembly the assembly text, should be a block.</a>
+<a name="260"><span class="lineNum">     260 </span>            :         /// @param _localVariables assigns stack positions to variables with the last one being the stack top</a>
+<a name="261"><span class="lineNum">     261 </span>            :         /// @param _externallyUsedFunctions a set of function names that are not to be renamed or removed.</a>
+<a name="262"><span class="lineNum">     262 </span>            :         /// @param _system if true, this is a &quot;system-level&quot; assembly where all functions use named labels</a>
+<a name="263"><span class="lineNum">     263 </span>            :         ///                and the code is marked to be exported as &quot;compiler-generated assembly utility file&quot;.</a>
+<a name="264"><span class="lineNum">     264 </span>            :         /// @param _optimiserSettings settings for the Yul optimiser, which is run in this function already.</a>
+<a name="265"><span class="lineNum">     265 </span>            :         /// @param _sourceName the name of the assembly file to be used for source locations</a>
+<a name="266"><span class="lineNum">     266 </span>            :         void appendInlineAssembly(</a>
+<a name="267"><span class="lineNum">     267 </span>            :                 std::string const&amp; _assembly,</a>
+<a name="268"><span class="lineNum">     268 </span>            :                 std::vector&lt;std::string&gt; const&amp; _localVariables = std::vector&lt;std::string&gt;(),</a>
+<a name="269"><span class="lineNum">     269 </span>            :                 std::set&lt;std::string&gt; const&amp; _externallyUsedFunctions = std::set&lt;std::string&gt;(),</a>
+<a name="270"><span class="lineNum">     270 </span>            :                 bool _system = false,</a>
+<a name="271"><span class="lineNum">     271 </span>            :                 OptimiserSettings const&amp; _optimiserSettings = OptimiserSettings::none(),</a>
+<a name="272"><span class="lineNum">     272 </span>            :                 std::string _sourceName = &quot;--CODEGEN--&quot;</a>
+<a name="273"><span class="lineNum">     273 </span>            :         );</a>
+<a name="274"><span class="lineNum">     274 </span>            : </a>
+<a name="275"><span class="lineNum">     275 </span>            :         /// If m_revertStrings is debug, @returns inline assembly code that</a>
+<a name="276"><span class="lineNum">     276 </span>            :         /// stores @param _message at the free memory pointer and reverts.</a>
+<a name="277"><span class="lineNum">     277 </span>            :         /// Otherwise returns &quot;revert(0, 0)&quot;.</a>
+<a name="278"><span class="lineNum">     278 </span>            :         std::string revertReasonIfDebug(std::string const&amp; _message = &quot;&quot;);</a>
+<a name="279"><span class="lineNum">     279 </span>            : </a>
+<a name="280"><span class="lineNum">     280 </span>            :         void optimizeYul(yul::Object&amp; _object, yul::EVMDialect const&amp; _dialect, OptimiserSettings const&amp; _optimiserSetting, std::set&lt;yul::YulName&gt; const&amp; _externalIdentifiers = {});</a>
+<a name="281"><span class="lineNum">     281 </span>            : </a>
+<a name="282"><span class="lineNum">     282 </span>            :         /// Appends arbitrary data to the end of the bytecode.</a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineCov">       3700 :         void appendToAuxiliaryData(bytes const&amp; _data) { m_asm-&gt;appendToAuxiliaryData(_data); }</span></a>
+<a name="284"><span class="lineNum">     284 </span>            : </a>
+<a name="285"><span class="lineNum">     285 </span>            :         /// Run optimisation step.</a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">       3700 :         void optimise(OptimiserSettings const&amp; _settings) { m_asm-&gt;optimise(evmasm::Assembly::OptimiserSettings::translateSettings(_settings, m_evmVersion)); }</span></a>
+<a name="287"><span class="lineNum">     287 </span>            : </a>
+<a name="288"><span class="lineNum">     288 </span>            :         /// @returns the runtime context if in creation mode and runtime context is set, nullptr otherwise.</a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineCov">      10288 :         CompilerContext* runtimeContext() const { return m_runtimeContext; }</span></a>
+<a name="290"><span class="lineNum">     290 </span>            :         /// @returns the identifier of the runtime subroutine.</a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineCov">      14830 :         size_t runtimeSub() const { return m_runtimeSub; }</span></a>
+<a name="292"><span class="lineNum">     292 </span>            : </a>
+<a name="293"><span class="lineNum">     293 </span>            :         /// @returns a const reference to the underlying assembly.</a>
+<a name="294"><span class="lineNum">     294 </span>            :         evmasm::Assembly const&amp; assembly() const { return *m_asm; }</a>
+<a name="295"><span class="lineNum">     295 </span>            :         /// @returns a shared pointer to the assembly.</a>
+<a name="296"><span class="lineNum">     296 </span>            :         /// Should be avoided except when adding sub-assemblies.</a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineCov">       7487 :         std::shared_ptr&lt;evmasm::Assembly&gt; assemblyPtr() const { return m_asm; }</span></a>
+<a name="298"><span class="lineNum">     298 </span>            : </a>
+<a name="299"><span class="lineNum">     299 </span>            :         /**</a>
+<a name="300"><span class="lineNum">     300 </span>            :          * Helper class to pop the visited nodes stack when a scope closes</a>
+<a name="301"><span class="lineNum">     301 </span>            :          */</a>
+<a name="302"><span class="lineNum">     302 </span>            :         class LocationSetter: public ScopeGuard</a>
+<a name="303"><span class="lineNum">     303 </span>            :         {</a>
+<a name="304"><span class="lineNum">     304 </span>            :         public:</a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">      57533 :                 LocationSetter(CompilerContext&amp; _compilerContext, ASTNode const&amp; _node):</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineCov">     115066 :                         ScopeGuard([&amp;]{ _compilerContext.popVisitedNodes(); }) { _compilerContext.pushVisitedNodes(&amp;_node); }</span></a>
+<a name="307"><span class="lineNum">     307 </span>            :         };</a>
+<a name="308"><span class="lineNum">     308 </span>            : </a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineCov">      22878 :         void setModifierDepth(size_t _modifierDepth) { m_asm-&gt;m_currentModifierDepth = _modifierDepth; }</span></a>
+<a name="310"><span class="lineNum">     310 </span>            : </a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineCov">        490 :         RevertStrings revertStrings() const { return m_revertStrings; }</span></a>
+<a name="312"><span class="lineNum">     312 </span>            : </a>
+<a name="313"><span class="lineNum">     313 </span>            : private:</a>
+<a name="314"><span class="lineNum">     314 </span>            :         /// Updates source location set in the assembly.</a>
+<a name="315"><span class="lineNum">     315 </span>            :         void updateSourceLocation();</a>
+<a name="316"><span class="lineNum">     316 </span>            : </a>
+<a name="317"><span class="lineNum">     317 </span>            :         /**</a>
+<a name="318"><span class="lineNum">     318 </span>            :          * Helper class that manages function labels and ensures that referenced functions are</a>
+<a name="319"><span class="lineNum">     319 </span>            :          * compiled in a specific order.</a>
+<a name="320"><span class="lineNum">     320 </span>            :          */</a>
+<a name="321"><span class="lineNum">     321 </span>            :         struct FunctionCompilationQueue</a>
+<a name="322"><span class="lineNum">     322 </span>            :         {</a>
+<a name="323"><span class="lineNum">     323 </span>            :                 /// @returns the entry label of the given function and creates it if it does not exist yet.</a>
+<a name="324"><span class="lineNum">     324 </span>            :                 /// @param _context compiler context used to create a new tag if needed</a>
+<a name="325"><span class="lineNum">     325 </span>            :                 evmasm::AssemblyItem entryLabel(Declaration const&amp; _declaration, CompilerContext&amp; _context);</a>
+<a name="326"><span class="lineNum">     326 </span>            :                 /// @returns the entry label of the given function. Might return an AssemblyItem of type</a>
+<a name="327"><span class="lineNum">     327 </span>            :                 /// UndefinedItem if it does not exist yet.</a>
+<a name="328"><span class="lineNum">     328 </span>            :                 evmasm::AssemblyItem entryLabelIfExists(Declaration const&amp; _declaration) const;</a>
+<a name="329"><span class="lineNum">     329 </span>            : </a>
+<a name="330"><span class="lineNum">     330 </span>            :                 /// @returns the next function in the queue of functions that are still to be compiled</a>
+<a name="331"><span class="lineNum">     331 </span>            :                 /// (i.e. that were referenced during compilation but where we did not yet generate code for).</a>
+<a name="332"><span class="lineNum">     332 </span>            :                 /// Returns nullptr if the queue is empty. Does not remove the function from the queue,</a>
+<a name="333"><span class="lineNum">     333 </span>            :                 /// that will only be done by startFunction below.</a>
+<a name="334"><span class="lineNum">     334 </span>            :                 Declaration const* nextFunctionToCompile() const;</a>
+<a name="335"><span class="lineNum">     335 </span>            :                 /// Informs the queue that we are about to compile the given function, i.e. removes</a>
+<a name="336"><span class="lineNum">     336 </span>            :                 /// the function from the queue of functions to compile.</a>
+<a name="337"><span class="lineNum">     337 </span>            :                 void startFunction(Declaration const&amp; _function);</a>
+<a name="338"><span class="lineNum">     338 </span>            : </a>
+<a name="339"><span class="lineNum">     339 </span>            :                 /// Labels pointing to the entry points of functions.</a>
+<a name="340"><span class="lineNum">     340 </span>            :                 std::map&lt;Declaration const*, evmasm::AssemblyItem&gt; m_entryLabels;</a>
+<a name="341"><span class="lineNum">     341 </span>            :                 /// Set of functions for which we did not yet generate code.</a>
+<a name="342"><span class="lineNum">     342 </span>            :                 std::set&lt;Declaration const*&gt; m_alreadyCompiledFunctions;</a>
+<a name="343"><span class="lineNum">     343 </span>            :                 /// Queue of functions that still need to be compiled (important to be a queue to maintain</a>
+<a name="344"><span class="lineNum">     344 </span>            :                 /// determinism even in the presence of a non-deterministic allocator).</a>
+<a name="345"><span class="lineNum">     345 </span>            :                 /// Mutable because we will throw out some functions earlier than needed.</a>
+<a name="346"><span class="lineNum">     346 </span>            :                 mutable std::queue&lt;Declaration const*&gt; m_functionsToCompile;</a>
+<a name="347"><span class="lineNum">     347 </span>            :         } m_functionCompilationQueue;</a>
+<a name="348"><span class="lineNum">     348 </span>            : </a>
+<a name="349"><span class="lineNum">     349 </span>            :         evmasm::AssemblyPointer m_asm;</a>
+<a name="350"><span class="lineNum">     350 </span>            :         /// Version of the EVM to compile against.</a>
+<a name="351"><span class="lineNum">     351 </span>            :         langutil::EVMVersion m_evmVersion;</a>
+<a name="352"><span class="lineNum">     352 </span>            :         RevertStrings const m_revertStrings;</a>
+<a name="353"><span class="lineNum">     353 </span>            :         bool m_useABICoderV2 = false;</a>
+<a name="354"><span class="lineNum">     354 </span>            :         /// Other already compiled contracts to be used in contract creation calls.</a>
+<a name="355"><span class="lineNum">     355 </span>            :         std::map&lt;ContractDefinition const*, std::shared_ptr&lt;Compiler const&gt;&gt; m_otherCompilers;</a>
+<a name="356"><span class="lineNum">     356 </span>            :         /// Storage offsets of state variables</a>
+<a name="357"><span class="lineNum">     357 </span>            :         std::map&lt;Declaration const*, std::pair&lt;u256, unsigned&gt;&gt; m_stateVariables;</a>
+<a name="358"><span class="lineNum">     358 </span>            :         /// Memory offsets reserved for the values of immutable variables during contract creation.</a>
+<a name="359"><span class="lineNum">     359 </span>            :         std::map&lt;VariableDeclaration const*, size_t&gt; m_immutableVariables;</a>
+<a name="360"><span class="lineNum">     360 </span>            :         /// Total amount of reserved memory. Reserved memory is used to store immutable variables during contract creation.</a>
+<a name="361"><span class="lineNum">     361 </span>            :         /// This has to be finalized before initialiseFreeMemoryPointer() is called. That function</a>
+<a name="362"><span class="lineNum">     362 </span>            :         /// will reset the optional to verify that.</a>
+<a name="363"><span class="lineNum">     363 </span>            :         std::optional&lt;size_t&gt; m_reservedMemory = {0};</a>
+<a name="364"><span class="lineNum">     364 </span>            :         /// Offsets of local variables on the stack (relative to stack base).</a>
+<a name="365"><span class="lineNum">     365 </span>            :         /// This needs to be a stack because if a modifier contains a local variable and this</a>
+<a name="366"><span class="lineNum">     366 </span>            :         /// modifier is applied twice, the position of the variable needs to be restored</a>
+<a name="367"><span class="lineNum">     367 </span>            :         /// after the nested modifier is left.</a>
+<a name="368"><span class="lineNum">     368 </span>            :         std::map&lt;Declaration const*, std::vector&lt;unsigned&gt;&gt; m_localVariables;</a>
+<a name="369"><span class="lineNum">     369 </span>            :         /// The contract currently being compiled. Virtual function lookup starts from this contarct.</a>
+<a name="370"><span class="lineNum">     370 </span>            :         ContractDefinition const* m_mostDerivedContract = nullptr;</a>
+<a name="371"><span class="lineNum">     371 </span>            :         /// Whether to use checked arithmetic.</a>
+<a name="372"><span class="lineNum">     372 </span>            :         Arithmetic m_arithmetic = Arithmetic::Checked;</a>
+<a name="373"><span class="lineNum">     373 </span>            :         /// Stack of current visited AST nodes, used for location attachment</a>
+<a name="374"><span class="lineNum">     374 </span>            :         std::stack&lt;ASTNode const*&gt; m_visitedNodes;</a>
+<a name="375"><span class="lineNum">     375 </span>            :         /// The runtime context if in Creation mode, this is used for generating tags that would be stored into the storage and then used at runtime.</a>
+<a name="376"><span class="lineNum">     376 </span>            :         CompilerContext *m_runtimeContext;</a>
+<a name="377"><span class="lineNum">     377 </span>            :         /// The index of the runtime subroutine.</a>
+<a name="378"><span class="lineNum">     378 </span>            :         size_t m_runtimeSub = std::numeric_limits&lt;size_t&gt;::max();</a>
+<a name="379"><span class="lineNum">     379 </span>            :         /// An index of low-level function labels by name.</a>
+<a name="380"><span class="lineNum">     380 </span>            :         std::map&lt;std::string, evmasm::AssemblyItem&gt; m_lowLevelFunctions;</a>
+<a name="381"><span class="lineNum">     381 </span>            :         /// Collector for yul functions.</a>
+<a name="382"><span class="lineNum">     382 </span>            :         MultiUseYulFunctionCollector m_yulFunctionCollector;</a>
+<a name="383"><span class="lineNum">     383 </span>            :         /// Set of externally used yul functions.</a>
+<a name="384"><span class="lineNum">     384 </span>            :         std::set&lt;std::string&gt; m_externallyUsedYulFunctions;</a>
+<a name="385"><span class="lineNum">     385 </span>            :         /// Generated Yul code used as utility. Source references from the bytecode can point here.</a>
+<a name="386"><span class="lineNum">     386 </span>            :         /// Produced from @a m_yulFunctionCollector.</a>
+<a name="387"><span class="lineNum">     387 </span>            :         std::string m_generatedYulUtilityCode;</a>
+<a name="388"><span class="lineNum">     388 </span>            :         /// Container for ABI functions to be generated.</a>
+<a name="389"><span class="lineNum">     389 </span>            :         ABIFunctions m_abiFunctions;</a>
+<a name="390"><span class="lineNum">     390 </span>            :         /// Container for Yul Util functions to be generated.</a>
+<a name="391"><span class="lineNum">     391 </span>            :         YulUtilFunctions m_yulUtilFunctions;</a>
+<a name="392"><span class="lineNum">     392 </span>            :         /// The queue of low-level functions to generate.</a>
+<a name="393"><span class="lineNum">     393 </span>            :         std::queue&lt;std::tuple&lt;std::string, unsigned, unsigned, std::function&lt;void(CompilerContext&amp;)&gt;&gt;&gt; m_lowLevelFunctionGenerationQueue;</a>
+<a name="394"><span class="lineNum">     394 </span>            :         /// Flag to check that appendYulUtilityFunctions() was called exactly once</a>
+<a name="395"><span class="lineNum">     395 </span>            :         bool m_appendYulUtilityFunctionsRan = false;</a>
+<a name="396"><span class="lineNum">     396 </span>            : };</a>
+<a name="397"><span class="lineNum">     397 </span>            : </a>
+<a name="398"><span class="lineNum">     398 </span>            : }</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
