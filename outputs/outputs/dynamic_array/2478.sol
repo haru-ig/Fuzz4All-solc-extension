@@ -1,0 +1,19 @@
+pragma solidity ^0.8.0;
+contract SemanticEquality_DynamicArrays_5842328b04cb9947d0b8dd5e7612c37231452be4
+{
+    uint[]  b;
+    uint x;
+    uint y;
+    constructor () public {
+        x = 2;
+        y = 0;
+        b = new uint[](0);
+        b = new uint[](1);
+        b[0] = 2;
+    }
+    function f() public {
+        x = x + 1;
+        y = y + 1;
+        b[0] = b[1] + 1;
+    }
+}

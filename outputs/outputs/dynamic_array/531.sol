@@ -1,0 +1,18 @@
+pragma solidity ^0.8.0;
+contract test8
+{
+    address[] internal myArray;
+    uint m1;
+    uint public v1;
+    function test() public
+    {
+        uint m2 = 101;
+        uint n2 = 100;
+        address[] memory cArray = new address[](2);
+        cArray[0] =  address(this);
+        m2 = m2 * 2;
+        n2 = n2 + 100;
+        m1 = m2;
+        v1 = n2;
+    }
+}

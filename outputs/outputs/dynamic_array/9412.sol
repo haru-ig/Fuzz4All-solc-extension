@@ -1,0 +1,35 @@
+pragma solidity ^0.8.0;
+contract Arrays4 {
+    uint256 public a;
+    uint8[] public b;
+    uint8[32] public c;
+    uint8 public d;
+    uint8[64] b;
+    uint8[128] c;
+    uint8[256] b;
+    uint8[512] c;
+    uint8[1024] b;
+    uint8[2048] c;
+    uint8[4096] [] b;
+    uint8[8192] [] c;
+    uint8[16384] [5] b;
+    uint8[32768] [3] c;
+    uint8[65536] [] b;
+    uint8[131072] [] c;
+    uint8[262144] [3] b;
+    uint8[524288] [5] c;
+    uint8[1048576] [] b;
+    uint8[2097152] [] c;
+    uint8[4194304] [3] b;
+    uint8[8388608] [5] c;
+    uint8[16777216] [] b;
+    uint8[33554432] [] c;
+    uint8[67108864] [3] b;
+    uint8[134217728] [5] c;
+    uint8[268435456] [] b;
+    uint8[536870912] [] c;
+    uint8[1073741824] [3] b;
+    uint8[2147483648] [5] c;
+    uint8[4294967296] [] b;
+    uint8[8589934592] [] c;
+}

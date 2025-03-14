@@ -1,0 +1,12 @@
+pragma solidity ^0.8.0;
+contract Mutators {
+  constructor() {
+  }
+  fallback() external payable {}
+  receive() external payable {}
+}
+pragma solidity ^0.8.0;
+contract Mutators {
+  constructor() {
+  }
+}

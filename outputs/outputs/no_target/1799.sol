@@ -1,0 +1,84 @@
+pragma solidity ^0.8.0;
+contract Mutate7 {
+    uint public _1;
+    uint private _2;
+    uint256 public _3;
+    uint32 private _4;
+    constructor() public {
+        _1 += 5;
+        _2 = _1;
+        _3 += 6;
+        _4 = _3;
+    }
+}
+contract Mutate8 {
+    uint public _1;
+    uint private _2;
+    uint256 public _3;
+    uint32 private _4;
+    uint40 public _5;
+    uint256 public _6;
+    uint32 public _7;
+    uint256 public _8;
+    uint32 public _9;
+    uint256 private _10;
+    uint32 public _11;
+    uint256 public _12;
+    uint32 public _13;
+    uint256 private _14;
+    uint32 public _15;
+    uint256 public _16;
+    constructor() public {
+        _1 += 8;
+        _2 = _1;
+        _3 += 9;
+        _4 = _3;
+        _5 += 10;
+        _6 = _5;
+        _7 += 11;
+        _8 = _7;
+        _9 += 12;
+        _10 = _9;
+        _11 += 13;
+        _12 = _11;
+        _13 += 14;
+        _14 = _13;
+        _15 += 15;
+        _16 = _15;
+    }
+}
+contract Mutate9 {
+    uint public _1;
+    uint private _2;
+    uint256 public _3;
+    uint32 private _4;
+    uint40 public _5;
+    uint256 public _6;
+    uint32 public _7;
+    uint256 public _8;
+    uint32 public _9;
+    uint256 private _10;
+    uint32 public _11;
+    uint256 public _12;
+    uint32 public _13;
+    uint256 private _14;
+    uint32 public _15;
+    uint256 public _16;
+    uint256 private _17;
+    uint32 public _18;
+    uint256 public _19;
+    constructor() public {
+        _1 += 16;
+        _2 = _1;
+        _3 += 17;
+        _4 = _3;
+        _5 += 18;
+        _6 = _5;
+        _7 += 19;
+        _8 = _7;
+        _9 += 20;
+        _10 = _9;
+        _11 += 21;
+        _12 = _11;
+        _13 += 22;
+        _1

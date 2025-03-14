@@ -1,0 +1,13 @@
+pragma solidity ^0.8.0;
+contract WorseCase4 {
+    function worseCase() public pure returns (uint) {
+        uint x = 10;
+        uint256 b = 2;
+        x = 2 / 1;
+        b = b + x;
+        b = 1 + b;
+        x = 1 / b;
+        x = x+1;
+        return (x);
+    }
+}

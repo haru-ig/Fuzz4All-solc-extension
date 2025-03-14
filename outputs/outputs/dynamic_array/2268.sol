@@ -1,0 +1,40 @@
+pragma solidity ^0.8.0;
+contract SemanticEquivalence_DynamicallySizedNestedArrayAssignment_fe381B96903d46E879dCae0d823116c3{
+    uint [] memory arrayOne;
+    uint [] memory arrayOne__storage;
+    uint [] memory arrayTwo;
+    uint [] memory arrayThree;
+    uint [] memory arrayFour;
+    uint [] memory arrayFive;
+    uint [] memory arraySix;
+    constructor()public{
+        uint [] memory memoryOne = arrayOne;
+        uint [] memory memoryTwo = arrayOne__storage;
+        arrayOne = arrayTwo;
+        arrayOne__storage = arrayTwo;
+        arrayOne__storage = arrayTwo;
+        arrayTwo = arrayThree;
+        memoryTwo = arrayOne__storage;
+        arrayOne = arrayTwo;
+        uint [] c = memoryTwo;
+        memoryTwo = arrayTwo;
+        memoryOne = arrayOne__storage;
+        uint [] memory memoryTwo__storage = memoryOne;
+        memoryOne = arrayOne__storage;
+        memoryTwo__storage = memoryOne;
+        arrayOne = arrayTwo;
+        arrayOne__storage = memoryOne;
+        arrayOne = arrayOne__storage;
+        uint [] memory memoryTwo = memoryOne;
+        uint [] memory memoryOne__storage = memoryTwo;
+        memoryTwo = memoryTwo;
+        uint [] memory memoryOne = memoryOne__storage;
+        memoryOne__storage = memoryTwo;
+        memoryTwo = memoryOne;
+        uint [] storage c2 = memoryTwo;
+        uint [] memory memoryTwo__storage = memoryTwo;
+        memoryTwo = memoryTwo;
+        memoryOne__storage = memoryOne;
+        uint [] memory [] memoryOne__storage2 = memory;
+        uint [] memory [] memory memoryTwo__storage = memoryOne;
+        memoryOne

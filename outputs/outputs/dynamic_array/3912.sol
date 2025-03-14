@@ -1,0 +1,52 @@
+pragma solidity ^0.8.0;
+contract C {
+    address[] private a;
+    address[] private b;
+    address[] internal c;
+    address[] internal d;
+    uint[][][2] public e;
+    uint[][][2] internal f;
+    uint[][][2] public g;
+    uint[][][2] internal h;
+    uint[][][2] public i;
+    uint[][][2] internal j;
+    uint[][][2] public k;
+    uint[][][2] internal l;
+    constructor (address[] memory arrayA) public {
+        a = arrayA;
+        a = arrayA;
+        b = arrayA;
+        b = arrayA;
+        c = arrayA;
+        c = arrayA;
+        d = arrayA;
+        d = arrayA;
+        e = arrayA;
+        e = arrayA;
+        f = arrayA;
+        f = arrayA;
+        g = arrayA;
+        g = arrayA;
+        h = arrayA;
+        h = arrayA;
+        i = arrayA;
+        i = arrayA;
+        j = arrayA;
+        j = arrayA;
+        k = arrayA;
+        k = arrayA;
+        l = a;
+        l = a;
+        b = arrayA;
+        b = arrayA;
+        arrayA = arrayA;
+        arrayA = arrayA;
+        c = arrayA;
+        c = arrayA;
+        arrayA = arrayA;
+        arrayA = arrayA;
+        arrayA = arrayA;
+        arrayA = arrayA;
+        arrayA = arrayA;
+    }
+} */

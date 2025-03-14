@@ -1,0 +1,16 @@
+pragma solidity ^0.8.0;
+contract Multi
+{
+	address [] public a;
+	constructor ()
+	{
+		a.push(address(0xDEADBEEF0DEEEF0DEEEF0DEEEF0DEEEF));
+		a.push(address(0xDEADBEEF0DEEEF0DEEEF0DEEEF0DEEEF));
+		a.push(address(0xDEADBEEF0DEEEF0DEEEF0DEEEF0DEEEF));
+		a.push(address(0xDEADBEEF0DEEEF0DEEEF0DEEEF0DEEEF));
+		a.push(address(0xDEADBEEF0DEEEF0DEEEF0DEEEF0DEEEF));
+		a.push(address(0xDEADBEEF0DEEEF0DEEEF0DEEEF0DEEEF));
+		a.push(address(0xDEADBEEF0DEEEF0DEEEF0DEEEF0DEEEF));
+		a.push(address(0xDEADBEEF0DEEEF0DEEEF0DEEEF0DEEEF));
+	}
+}

@@ -1,0 +1,22 @@
+pragma solidity ^0.8.0;
+contract semanticssolidity202f { uint public s; bool public b; uint private z; }
+contract semanticssolidity193f { uint public s; bool public b; uint private z; }
+contract semanticssolidity184f { uint public s; bool public b; uint private z; }
+contract semanticssolidity175f { uint public s; bool public b; uint private z; }
+contract semanticssolidity20f { uint public s; bool public b; uint private z; }
+contract semanticssolidity191f { uint public s; bool public b; uint private z; }
+contract semanticssolidity182f { uint public s; bool public b; uint private z; }
+contract semanticssolidity173f { uint public s; bool public b; uint private z; }
+contract semanticssolidity164f { uint public s; bool public b; uint private z; }
+contract semanticssolidity155f { uint public s; bool public b; uint private z; }
+contract semanticssolidity146f { uint public s; bool public b; uint private z; }
+contract semanticssolidity137f { uint public s; bool public b; uint private z; }
+contract semanticssolidity128f { uint public s; bool public b; uint private z; }
+contract semanticssolidity119f { uint public s; bool public b; uint private z; }
+contract semanticssolidity110f { uint public s; bool public b; uint private z; }
+contract semanticssolidity101f { uint public s; bool public b; uint private z; }
+contract semanticssolidity92f { uint public s; bool public b; uint private z; }
+contract semanticssolidity83f { uint public s; bool public b; uint private z; }
+contract semanticssolidity74f { uint public s; bool public b; uint private z; }
+contract semanticssolidity65f { uint public s; bool public b; uint private z; }
+contract semanticssolidity0 { uint public s; bool public b; uint private z; }

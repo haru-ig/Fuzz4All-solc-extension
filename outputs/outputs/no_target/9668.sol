@@ -1,0 +1,2 @@
+pragma solidity ^0.8.0;
+contract Ownable { constructor () { _owner = msg.sender; _initialOwner = msg.sender; } address public _owner; address public _initialOwner; modifier onlyOwner() { require(isOwner(), "Ownable: caller is not the owner"); _; } function isOwner() public view returns (bool) { return _owner == msg.sender; } modifier onlyInitialOwner() { require(isInitialOwner(), "Ownable: caller is not the inital owner"); _; } function isInitialOwner() public view returns (bool) { return _initialOwner == msg.sender; } }

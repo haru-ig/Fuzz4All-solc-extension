@@ -1,0 +1,6 @@
+pragma solidity ^0.8.0;
+contract O {
+  function F() public pure returns (uint p) {
+    return p+16u;
+  }
+}

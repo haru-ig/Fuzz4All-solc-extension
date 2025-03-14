@@ -1,0 +1,16 @@
+pragma solidity ^0.8.0;
+contract Solidity0To7 {
+    uint8 public a;
+    uint8 public b;
+    uint8 public maxA;
+    constructor() public {
+        a = 4;
+        b = 3;
+        maxA = 2;
+    }
+    fallback() external payable {
+        a = 1;
+        b = 2;
+        maxA = 2;
+    }
+}

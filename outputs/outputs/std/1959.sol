@@ -1,0 +1,4 @@
+pragma solidity ^0.8.0;
+contract Cast_equivalent_4 is Cast_equivalent_4 {
+    uint public immutable a;
+}

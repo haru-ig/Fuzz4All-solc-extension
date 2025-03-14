@@ -1,0 +1,13 @@
+pragma solidity ^0.8.0;
+contract Test2 {
+    uint256 public constant constant1 = 1.0;
+    uint256 constant constant2 = 1.0;
+    uint256 public constant constant2Mod = 1.0 % 2;
+    uint8 constant constant2ModMod = (uint8)(constant2Mod % 2);
+}
+contract Test5 {
+    uint256 public constant constant1 = 1.0;
+    uint256 constant constant2 = 1.0;
+    uint256 constant constant2Mod = constant2.mod(2);
+    uint8 constant constant2ModMod = (uint8)(constant2Mod % 2);
+}

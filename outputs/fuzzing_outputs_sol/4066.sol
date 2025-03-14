@@ -1,0 +1,16 @@
+pragma solidity ^0.8.0;
+contract Caller {
+
+
+  fallback() external { }
+
+
+
+  receive() external payable { }
+
+
+  function noPayableCall() internal {
+
+    noPayableCall();
+  }
+}

@@ -1,0 +1,45 @@
+pragma solidity ^0.8.0;
+contract SemanticEquivalence_NestedArrayAssignment_dynamically_sized_test_5_1_{
+    function test_1()public{
+    uint [] memory arrayOne;
+    uint [] memory arrayTwo;
+    uint [] memory arrayThree;
+    uint [] memory arrayFour;
+    uint [] memory arrayFive;
+    uint [] memory arraySix;
+    uint [] storage new_arrayOne;
+    uint [] storage new_arrayTwo;
+    uint [] storage new_arrayThree;
+    uint [] storage new_arrayFour;
+    uint [] storage new_arrayFive;
+    uint [] storage new_arraySix;
+    new_arrayOne = arrayOne;
+    new_arrayTwo = arrayOne;
+    new_arrayThree = arrayOne;
+    new_arrayFour = arrayOne;
+    new_arrayFive = arrayOne;
+    new_arraySix = arrayOne;
+    new_arrayOne = new_arrayTwo;
+    new_arrayOne = new_arrayThree;
+    new_arrayOne = new_arrayFour;
+    new_arrayOne = new_arrayFive;
+    new_arrayOne = new_arraySix;
+    new_arrayTwo = new_arrayThree;
+    new_arrayTwo = new_arrayFour;
+    new_arrayTwo = new_arrayFive;
+    new_arrayTwo = new_arraySix;
+    new_arrayThree = new_arrayFour;
+    new_arrayThree = new_arrayFive;
+    new_arrayThree = new_arraySix;
+    new_arrayFour = new_arrayFive;
+    new_arrayFour = new_arraySix;
+    arrayOne = new_arrayTwo;
+    arrayTwo = new_arrayThree;
+    arrayThree = new_arrayFour;
+    arrayFour = new_arrayFive;
+    arrayFive = new_arraySix;
+    new_arrayOne[0] = 1;
+    new_arrayOne[1] = 2;
+    new_arrayTwo[1] = 3;
+    new_arrayThree[1] = 4;
+    new_array

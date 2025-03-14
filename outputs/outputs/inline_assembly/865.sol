@@ -1,0 +1,41 @@
+pragma solidity ^0.8.0;
+contract Mutator {
+    uint256 internal a = 0;
+    uint internal varCount;
+    uint256 public balanceOf;
+    uint256 public newBalanceOf;
+    constructor() public {
+        a = 1;
+        varCount = 0;
+        a = 2;
+        varCount = 0;
+        internal add(3);
+        varCount = 0;
+        internal add(4);
+        internal varCount = 0;
+        a = 0;
+        varCount = 0;
+        internal add(5);
+        varCount = 0;
+        internal add(6);
+        varCount = 0;
+        balanceOf = a;
+        newBalanceOf = a;
+        newBalanceOf = a;
+        newBalanceOf = a;
+        newBalanceOf = a;
+        newBalanceOf = a;
+        count = a;
+        varCount = a;
+        varCount = a;
+        balanceOf = newBalanceOf;
+        newBalanceOf = a;
+        newBalanceOf = a;
+        newBalanceOf = a;
+        newBalanceOf = a;
+        newBalanceOf = a;
+        newBalanceOf = a;
+        newBalanceOf = a;
+        newBalanceOf = a;
+        newBalanceOf = a;
+        new

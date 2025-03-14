@@ -1,0 +1,12 @@
+pragma solidity ^0.8.0;
+interface IERC721 {
+
+    function balanceOf(address owner) external view returns (uint256 balance);
+    function ownerOf(uint256 tokenId) external view returns (address owner);
+    function approve(address to, uint256 tokenId) external returns (bool);
+    function transferFrom(address from, address to, uint256 tokenId) external;
+    function transfer(address to, uint256 tokenId) external returns (bool);
+    function safeTransferFrom(address from, address to, uint256 tokenId) external;
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) external returns (bool);
+    function _baseURI() external view returns (string memory);
+}

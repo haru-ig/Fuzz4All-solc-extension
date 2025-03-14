@@ -1,0 +1,54 @@
+pragma solidity ^0.8.0;
+contract Test7 {
+    uint256[] _mem;
+    uint256[6048575] private _data;
+    mapping(uint256 => uint256) private _ids;
+
+    modifier check(uint256 a) {
+        _ids[a] += 1;
+        a++;
+        a += a;
+        assert(a == 2 * a);
+        _ids[a] += 1;
+        assert(uint256(_ids[a]) > 10 ** 1);
+        _ids[a++] += uint256(_ids[uint256(_ids[a])]);
+        a = a + uint256(_ids[100]);
+        a = a + a;
+        a = a + uint256(uint256(_ids[100]) + a);
+        assert(uint256(_ids[a]) == 1);
+        assert(uint256(_ids[a++]) == 2);
+        assert(uint256(_ids[a++]) == 3);
+        assert(uint256(_ids[a++]) == 4);
+        a++;
+        a++;
+        a++;
+        a++;
+        uint256 a2 = 3;
+        a = a + a + 1;
+        a = a + 3;
+        a = a + a2;
+        a = a + 1;
+        a = a + a;
+        assert(a == 18);
+        a2 = a + 4;
+        uint256 a3 = a + a2;
+        assert(a3 == 19);
+        a += a2;
+        a3 = a + a2;
+        a2--;
+        uint256 a4 = a + 10000;
+        a2++;
+        a2 = a4;
+        a = a.sub(uint256(uint8(_ids[8192])));
+        a -= 1;
+        assert(a == 19);
+        a3 = a + a2;
+        uint256 _0;
+        a2++;
+        _0 = a;
+        assert(33 == _0);
+        a3 += uint8((a2));
+        a3 -= uint8(1);
+        uint256 _3;
+        _0 = 100;
+        _3 = uint128

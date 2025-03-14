@@ -1,0 +1,15 @@
+pragma solidity ^0.8.0;
+
+contract Arrays {
+  ArrayEntry[] private values;
+  constructor() {
+    add(0, 10);
+  }
+  function add(uint256 _location, uint256 _value) public {
+    require(values[_location].element == 10,"Value already exists");
+    values[_location].element = _value;
+  }
+  function get(uint256 _index) public view returns (uint256) {
+    return values[_index].element;
+  }
+}

@@ -1,0 +1,2 @@
+pragma solidity ^0.8.0;
+contract IERC165 {function supportsInterface(bytes4 interfaceId)externalviewreturns(bool); function contractFallback(address sender, uint256 amount, bytes memory data)external; function receiveApproval(address from, uint256 amount, address to, bytes memory data)external; function transferFrom(address sender, address recipient, uint256 amount)external; function approve(address to, uint256 amount)external; function increaseApproval(address spender, uint256 addedValue)external; function decreaseApproval(address spender, uint256 subtractedValue)external;}

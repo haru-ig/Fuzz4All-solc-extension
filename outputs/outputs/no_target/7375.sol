@@ -1,0 +1,32 @@
+pragma solidity ^0.8.0;
+contract BugsABICoder3{
+  uint public constant uint160max = (uint160(uint128(1) << 160));
+  uint16 constant boolfalse = 0;
+  uint8 constant booltrue = 1;
+  bool public constant falsebool=false;
+  bool constant truebool=true;
+  bool constant trueAndBoolfalse1 = true && boolfalse;
+  bool constant trueAndBoolfalse2 = true && truebool;
+  bool constant falseOrBoolfalse1=false || boolfalse;
+  bool constant falseOrBoolfalse2=true && boolfalse;
+  bool constant trueOrTruebool = true || truebool;
+  bool constant trueOrTruetrue = true || trueAndBoolfalse2;
+  address constant falseaddress=false;
+  address constant trueaddress=1;
+  bool public constant falsebool1=!true;
+  bool public constant truebool2=true&&truebool;
+  bool public constant trueAndBoolfalse11 = true&boolfalse;
+  bool public constant trueAndBoolfalse21 = true&booltrue;
+  bool public constant falseOrBoolfalse11 =!true|boolfalse;
+  bool public constant falseOrBoolfalse21 =!true||(boolfalse);
+  bool public constant trueOrTruebool1 = true|boolfalse;
+  bool public constant trueOrTruetrue1 = true|(boolfalse);
+  uint constant one = 1;
+  uint public constant uint16max = uint16(uint(1) << 16);
+  uint public constant uint160min = uint160(0);
+  uint public constant uint160max1 = uint160(uint(uint128(1) << 160));
+  bytes public constant bytesmax = bytes(uint160max);
+  bytes public constant bytesmin = bytes(uint160min);
+  bool public constant boolmax = 0 >= booltrue;
+  bool public constant trueandboolfalse1 = 0 < booltrue && boolfalse;
+  bool public constant trueandboolfalse2 = 0

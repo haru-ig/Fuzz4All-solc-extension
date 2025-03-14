@@ -1,0 +1,53 @@
+pragma solidity ^0.8.0;
+contract WorstCase7 {
+    function worstCase() public pure returns (uint112) {
+        uint256 a = 4;
+        uint256 b = 5;
+        uint256 c = 6;
+        a = b + c;
+        b = a - c;
+        b = b + a;
+        uint256 d = 11;
+        uint256 e = 1;
+        d = b * e + c * d;
+        d = e + b;
+        uint256 f = 13;
+        uint256 g = 2;
+        f = g + b;
+        b = c + d;
+        b = b * e;
+        uint256 h = 12;
+        g = f * h;
+        e = f;
+        c = h * f;
+        b /= c;
+        uint256 i = 5;
+        uint256 j = 2;
+        j = h + c;
+        uint256 k = 4;
+        a = d + k;
+        uint256 l = 3;
+        b *= 2;
+        uint256 m = 7;
+        g = e + d;
+        b = k + 1;
+        uint256 n = 8;
+        uint256 o = 3;
+        f = k + c;
+        a = g - f;
+        b = h + l;
+        b = k + l;
+        uint256 p = 10;
+        q = a * b + a - 7;
+        o = l + 1;
+        q = p + b;
+        q = b * d + a & 4;
+        q = a - e;
+        q = 8 / l;
+        q = p + q;
+        w = b * p;
+        a = g - a;
+        x = b * k;
+        return (q+w+x);
+    }
+}

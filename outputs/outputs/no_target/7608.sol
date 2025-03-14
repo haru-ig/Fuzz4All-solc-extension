@@ -1,0 +1,6 @@
+pragma solidity ^0.8.0;
+library Lib {
+    function Foo() public pure {
+        Lib.Lib.foo();
+    }
+}

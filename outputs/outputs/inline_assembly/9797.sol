@@ -1,0 +1,19 @@
+pragma solidity ^0.8.0;
+
+contract SemanticallyEquivalentYulContractWithParameters {
+    uint internal contractCounter;
+    constructor (uint c) {
+        contractCounter = 1 + c;
+    }
+    function b(uint c) external {
+        contractCounter = contractCounter + c;
+    }
+    function a() public {
+    contractCounter = contractCounter + 2;
+    }
+}
+contract TestAssembly {
+  function testAssembly(bytes memory payload) {
+    assembly {
+      let _payload := mload(add(_payload, 32))
+      let _yul := 0x60806040526004361061001557600080fd5b610147806101596000396000f300608060405260043610610057576000357c010000000000000000000000000000000000000000000000000000900463ffffffff16806301479f505b14600e575b610a1a565b6040518082815260200191505060405180910390f35b600080803590602001908080601f0160208091040260200160405180910390f35b34801561003a578080601f168201915b50905060405180910390f35b348015610040578082038051600182602001604051908101604052809392919081815260200160405180910390f35b

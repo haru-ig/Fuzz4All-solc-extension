@@ -1,0 +1,8 @@
+pragma solidity ^0.8.0;
+contract Equivalent
+{
+}
+pragma solidity ^0.8.0;
+contract Equivalent
+{
+}

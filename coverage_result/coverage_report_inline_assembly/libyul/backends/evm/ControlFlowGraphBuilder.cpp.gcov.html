@@ -1,0 +1,715 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - final_coverage.info - libyul/backends/evm/ControlFlowGraphBuilder.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">libyul/backends/evm</a> - ControlFlowGraphBuilder.cpp<span style="font-size: 80%;"> (source / <a href="ControlFlowGraphBuilder.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">final_coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">389</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2025-01-29 11:29:04</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">67</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<a name="2"><span class="lineNum">       2 </span>            :         This file is part of solidity.</a>
+<a name="3"><span class="lineNum">       3 </span>            : </a>
+<a name="4"><span class="lineNum">       4 </span>            :         solidity is free software: you can redistribute it and/or modify</a>
+<a name="5"><span class="lineNum">       5 </span>            :         it under the terms of the GNU General Public License as published by</a>
+<a name="6"><span class="lineNum">       6 </span>            :         the Free Software Foundation, either version 3 of the License, or</a>
+<a name="7"><span class="lineNum">       7 </span>            :         (at your option) any later version.</a>
+<a name="8"><span class="lineNum">       8 </span>            : </a>
+<a name="9"><span class="lineNum">       9 </span>            :         solidity is distributed in the hope that it will be useful,</a>
+<a name="10"><span class="lineNum">      10 </span>            :         but WITHOUT ANY WARRANTY; without even the implied warranty of</a>
+<a name="11"><span class="lineNum">      11 </span>            :         MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</a>
+<a name="12"><span class="lineNum">      12 </span>            :         GNU General Public License for more details.</a>
+<a name="13"><span class="lineNum">      13 </span>            : </a>
+<a name="14"><span class="lineNum">      14 </span>            :         You should have received a copy of the GNU General Public License</a>
+<a name="15"><span class="lineNum">      15 </span>            :         along with solidity.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</a>
+<a name="16"><span class="lineNum">      16 </span>            : */</a>
+<a name="17"><span class="lineNum">      17 </span>            : // SPDX-License-Identifier: GPL-3.0</a>
+<a name="18"><span class="lineNum">      18 </span>            : /**</a>
+<a name="19"><span class="lineNum">      19 </span>            :  * Transformation of a Yul AST into a control flow graph.</a>
+<a name="20"><span class="lineNum">      20 </span>            :  */</a>
+<a name="21"><span class="lineNum">      21 </span>            : </a>
+<a name="22"><span class="lineNum">      22 </span>            : #include &lt;libyul/backends/evm/ControlFlowGraphBuilder.h&gt;</a>
+<a name="23"><span class="lineNum">      23 </span>            : #include &lt;libyul/AST.h&gt;</a>
+<a name="24"><span class="lineNum">      24 </span>            : #include &lt;libyul/Exceptions.h&gt;</a>
+<a name="25"><span class="lineNum">      25 </span>            : #include &lt;libyul/Utilities.h&gt;</a>
+<a name="26"><span class="lineNum">      26 </span>            : #include &lt;libyul/ControlFlowSideEffectsCollector.h&gt;</a>
+<a name="27"><span class="lineNum">      27 </span>            : </a>
+<a name="28"><span class="lineNum">      28 </span>            : #include &lt;libsolutil/cxx20.h&gt;</a>
+<a name="29"><span class="lineNum">      29 </span>            : #include &lt;libsolutil/Visitor.h&gt;</a>
+<a name="30"><span class="lineNum">      30 </span>            : #include &lt;libsolutil/Algorithms.h&gt;</a>
+<a name="31"><span class="lineNum">      31 </span>            : </a>
+<a name="32"><span class="lineNum">      32 </span>            : #include &lt;range/v3/action/push_back.hpp&gt;</a>
+<a name="33"><span class="lineNum">      33 </span>            : #include &lt;range/v3/action/erase.hpp&gt;</a>
+<a name="34"><span class="lineNum">      34 </span>            : #include &lt;range/v3/range/conversion.hpp&gt;</a>
+<a name="35"><span class="lineNum">      35 </span>            : #include &lt;range/v3/view/concat.hpp&gt;</a>
+<a name="36"><span class="lineNum">      36 </span>            : #include &lt;range/v3/view/drop_last.hpp&gt;</a>
+<a name="37"><span class="lineNum">      37 </span>            : #include &lt;range/v3/view/enumerate.hpp&gt;</a>
+<a name="38"><span class="lineNum">      38 </span>            : #include &lt;range/v3/view/filter.hpp&gt;</a>
+<a name="39"><span class="lineNum">      39 </span>            : #include &lt;range/v3/view/iota.hpp&gt;</a>
+<a name="40"><span class="lineNum">      40 </span>            : #include &lt;range/v3/view/map.hpp&gt;</a>
+<a name="41"><span class="lineNum">      41 </span>            : #include &lt;range/v3/view/reverse.hpp&gt;</a>
+<a name="42"><span class="lineNum">      42 </span>            : #include &lt;range/v3/view/single.hpp&gt;</a>
+<a name="43"><span class="lineNum">      43 </span>            : #include &lt;range/v3/view/take_last.hpp&gt;</a>
+<a name="44"><span class="lineNum">      44 </span>            : #include &lt;range/v3/view/transform.hpp&gt;</a>
+<a name="45"><span class="lineNum">      45 </span>            : </a>
+<a name="46"><span class="lineNum">      46 </span>            : using namespace solidity;</a>
+<a name="47"><span class="lineNum">      47 </span>            : using namespace solidity::yul;</a>
+<a name="48"><span class="lineNum">      48 </span>            : </a>
+<a name="49"><span class="lineNum">      49 </span>            : namespace</a>
+<a name="50"><span class="lineNum">      50 </span>            : {</a>
+<a name="51"><span class="lineNum">      51 </span>            : /// Removes edges to blocks that are not reachable.</a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 : void cleanUnreachable(CFG&amp; _cfg)</span></a>
+<a name="53"><span class="lineNum">      53 </span>            : {</a>
+<a name="54"><span class="lineNum">      54 </span>            :         // Determine which blocks are reachable from the entry.</a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 :         util::BreadthFirstSearch&lt;CFG::BasicBlock*&gt; reachabilityCheck{{_cfg.entry}};</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 :         for (auto const&amp; functionInfo: _cfg.functionInfo | ranges::views::values)</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 :                 reachabilityCheck.verticesToTraverse.emplace_back(functionInfo.entry);</span></a>
+<a name="58"><span class="lineNum">      58 </span>            : </a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :         reachabilityCheck.run([&amp;](CFG::BasicBlock* _node, auto&amp;&amp; _addChild) {</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :                 visit(util::GenericVisitor{</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :                         [&amp;](CFG::BasicBlock::Jump const&amp; _jump) {</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :                                 _addChild(_jump.target);</span></a>
+<a name="63"><span class="lineNum">      63 </span>            :                         },</a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :                         [&amp;](CFG::BasicBlock::ConditionalJump const&amp; _jump) {</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :                                 _addChild(_jump.zero);</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :                                 _addChild(_jump.nonZero);</span></a>
+<a name="67"><span class="lineNum">      67 </span>            :                         },</a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :                         [](CFG::BasicBlock::FunctionReturn const&amp;) {},</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :                         [](CFG::BasicBlock::Terminated const&amp;) {},</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :                         [](CFG::BasicBlock::MainExit const&amp;) {}</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :                 }, _node-&gt;exit);</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :         });</span></a>
+<a name="73"><span class="lineNum">      73 </span>            : </a>
+<a name="74"><span class="lineNum">      74 </span>            :         // Remove all entries from unreachable nodes from the graph.</a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 :         for (CFG::BasicBlock* node: reachabilityCheck.visited)</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :                 cxx20::erase_if(node-&gt;entries, [&amp;](CFG::BasicBlock* entry) -&gt; bool {</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :                         return !reachabilityCheck.visited.count(entry);</span></a>
+<a name="78"><span class="lineNum">      78 </span>            :                 });</a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="80"><span class="lineNum">      80 </span>            : </a>
+<a name="81"><span class="lineNum">      81 </span>            : /// Sets the ``recursive`` member to ``true`` for all recursive function calls.</a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 : void markRecursiveCalls(CFG&amp; _cfg)</span></a>
+<a name="83"><span class="lineNum">      83 </span>            : {</a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :         std::map&lt;CFG::BasicBlock*, std::vector&lt;CFG::FunctionCall*&gt;&gt; callsPerBlock;</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :         auto const&amp; findCalls = [&amp;](CFG::BasicBlock* _block)</span></a>
+<a name="86"><span class="lineNum">      86 </span>            :         {</a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 :                 if (auto* calls = util::valueOrNullptr(callsPerBlock, _block))</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :                         return *calls;</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 :                 std::vector&lt;CFG::FunctionCall*&gt;&amp; calls = callsPerBlock[_block];</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 :                 util::BreadthFirstSearch&lt;CFG::BasicBlock*&gt;{{_block}}.run([&amp;](CFG::BasicBlock* _block, auto _addChild) {</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineNoCov">          0 :                         for (auto&amp; operation: _block-&gt;operations)</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 :                                 if (auto* functionCall = std::get_if&lt;CFG::FunctionCall&gt;(&amp;operation.operation))</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineNoCov">          0 :                                         calls.emplace_back(functionCall);</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 :                         std::visit(util::GenericVisitor{</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :                                 [&amp;](CFG::BasicBlock::MainExit const&amp;) {},</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :                                 [&amp;](CFG::BasicBlock::Jump const&amp; _jump)</span></a>
+<a name="97"><span class="lineNum">      97 </span>            :                                 {</a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineNoCov">          0 :                                         _addChild(_jump.target);</span></a>
+<a name="99"><span class="lineNum">      99 </span>            :                                 },</a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineNoCov">          0 :                                 [&amp;](CFG::BasicBlock::ConditionalJump const&amp; _conditionalJump)</span></a>
+<a name="101"><span class="lineNum">     101 </span>            :                                 {</a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineNoCov">          0 :                                         _addChild(_conditionalJump.zero);</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 :                                         _addChild(_conditionalJump.nonZero);</span></a>
+<a name="104"><span class="lineNum">     104 </span>            :                                 },</a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 :                                 [&amp;](CFG::BasicBlock::FunctionReturn const&amp;) {},</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 :                                 [&amp;](CFG::BasicBlock::Terminated const&amp;) {},</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :                         }, _block-&gt;exit);</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :                 });</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 return calls;</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineNoCov">          0 :         };</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 :         for (auto&amp; functionInfo: _cfg.functionInfo | ranges::views::values)</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineNoCov">          0 :                 for (CFG::FunctionCall* call: findCalls(functionInfo.entry))</span></a>
+<a name="113"><span class="lineNum">     113 </span>            :                 {</a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 :                         util::BreadthFirstSearch&lt;CFG::FunctionCall*&gt; breadthFirstSearch{{call}};</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 :                         breadthFirstSearch.run([&amp;](CFG::FunctionCall* _call, auto _addChild) {</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 :                                 auto&amp; calledFunctionInfo = _cfg.functionInfo.at(&amp;_call-&gt;function.get());</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineNoCov">          0 :                                 if (&amp;calledFunctionInfo == &amp;functionInfo)</span></a>
+<a name="118"><span class="lineNum">     118 </span>            :                                 {</a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :                                         call-&gt;recursive = true;</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 :                                         breadthFirstSearch.abort();</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 :                                         return;</span></a>
+<a name="122"><span class="lineNum">     122 </span>            :                                 }</a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :                                 for (CFG::FunctionCall* nestedCall: findCalls(_cfg.functionInfo.at(&amp;_call-&gt;function.get()).entry))</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :                                         _addChild(nestedCall);</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 :                         });</span></a>
+<a name="126"><span class="lineNum">     126 </span>            :                 }</a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="128"><span class="lineNum">     128 </span>            : </a>
+<a name="129"><span class="lineNum">     129 </span>            : /// Marks each cut-vertex in the CFG, i.e. each block that begins a disconnected sub-graph of the CFG.</a>
+<a name="130"><span class="lineNum">     130 </span>            : /// Entering such a block means that control flow will never return to a previously visited block.</a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 : void markStartsOfSubGraphs(CFG&amp; _cfg)</span></a>
+<a name="132"><span class="lineNum">     132 </span>            : {</a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 :         std::vector&lt;CFG::BasicBlock*&gt; entries;</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineNoCov">          0 :         entries.emplace_back(_cfg.entry);</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :         for (auto&amp;&amp; functionInfo: _cfg.functionInfo | ranges::views::values)</span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineNoCov">          0 :                 entries.emplace_back(functionInfo.entry);</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineNoCov">          0 :         for (auto&amp; entry: entries)</span></a>
+<a name="138"><span class="lineNum">     138 </span>            :         {</a>
+<a name="139"><span class="lineNum">     139 </span>            :                 /**</a>
+<a name="140"><span class="lineNum">     140 </span>            :                  * Detect bridges following Algorithm 1 in https://arxiv.org/pdf/2108.07346.pdf</a>
+<a name="141"><span class="lineNum">     141 </span>            :                  * and mark the bridge targets as starts of sub-graphs.</a>
+<a name="142"><span class="lineNum">     142 </span>            :                  */</a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineNoCov">          0 :                 std::set&lt;CFG::BasicBlock*&gt; visited;</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 :                 std::map&lt;CFG::BasicBlock*, size_t&gt; disc;</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineNoCov">          0 :                 std::map&lt;CFG::BasicBlock*, size_t&gt; low;</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 :                 std::map&lt;CFG::BasicBlock*, CFG::BasicBlock*&gt; parent;</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineNoCov">          0 :                 size_t time = 0;</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineNoCov">          0 :                 auto dfs = [&amp;](CFG::BasicBlock* _u, auto _recurse) -&gt; void {</span></a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 :                         visited.insert(_u);</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :                         disc[_u] = low[_u] = time;</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :                         time++;</span></a>
+<a name="152"><span class="lineNum">     152 </span>            : </a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineNoCov">          0 :                         std::vector&lt;CFG::BasicBlock*&gt; children = _u-&gt;entries;</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 :                         visit(util::GenericVisitor{</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 :                                 [&amp;](CFG::BasicBlock::Jump const&amp; _jump) {</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :                                         children.emplace_back(_jump.target);</span></a>
+<a name="157"><span class="lineNum">     157 </span>            :                                 },</a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineNoCov">          0 :                                 [&amp;](CFG::BasicBlock::ConditionalJump const&amp; _jump) {</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineNoCov">          0 :                                         children.emplace_back(_jump.zero);</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 :                                         children.emplace_back(_jump.nonZero);</span></a>
+<a name="161"><span class="lineNum">     161 </span>            :                                 },</a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineNoCov">          0 :                                 [&amp;](CFG::BasicBlock::FunctionReturn const&amp;) {},</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineNoCov">          0 :                                 [&amp;](CFG::BasicBlock::Terminated const&amp;) { _u-&gt;isStartOfSubGraph = true; },</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineNoCov">          0 :                                 [&amp;](CFG::BasicBlock::MainExit const&amp;) { _u-&gt;isStartOfSubGraph = true; }</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineNoCov">          0 :                         }, _u-&gt;exit);</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 :                         yulAssert(!util::contains(children, _u));</span></a>
+<a name="167"><span class="lineNum">     167 </span>            : </a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineNoCov">          0 :                         for (CFG::BasicBlock* v: children)</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 :                                 if (!visited.count(v))</span></a>
+<a name="170"><span class="lineNum">     170 </span>            :                                 {</a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineNoCov">          0 :                                         parent[v] = _u;</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 :                                         _recurse(v, _recurse);</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 :                                         low[_u] = std::min(low[_u], low[v]);</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 :                                         if (low[v] &gt; disc[_u])</span></a>
+<a name="175"><span class="lineNum">     175 </span>            :                                         {</a>
+<a name="176"><span class="lineNum">     176 </span>            :                                                 // _u &lt;-&gt; v is a cut edge in the undirected graph</a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 :                                                 bool edgeVtoU = util::contains(_u-&gt;entries, v);</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineNoCov">          0 :                                                 bool edgeUtoV = util::contains(v-&gt;entries, _u);</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :                                                 if (edgeVtoU &amp;&amp; !edgeUtoV)</span></a>
+<a name="180"><span class="lineNum">     180 </span>            :                                                         // Cut edge v -&gt; _u</a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :                                                         _u-&gt;isStartOfSubGraph = true;</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 :                                                 else if (edgeUtoV &amp;&amp; !edgeVtoU)</span></a>
+<a name="183"><span class="lineNum">     183 </span>            :                                                         // Cut edge _u -&gt; v</a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 :                                                         v-&gt;isStartOfSubGraph = true;</span></a>
+<a name="185"><span class="lineNum">     185 </span>            :                                         }</a>
+<a name="186"><span class="lineNum">     186 </span>            :                                 }</a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 :                                 else if (v != parent[_u])</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineNoCov">          0 :                                         low[_u] = std::min(low[_u], disc[v]);</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineNoCov">          0 :                 };</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :                 dfs(entry, dfs);</span></a>
+<a name="191"><span class="lineNum">     191 </span>            :         }</a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="193"><span class="lineNum">     193 </span>            : </a>
+<a name="194"><span class="lineNum">     194 </span>            : /// Marks each block that needs to maintain a clean stack. That is each block that has an outgoing</a>
+<a name="195"><span class="lineNum">     195 </span>            : /// path to a function return.</a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 : void markNeedsCleanStack(CFG&amp; _cfg)</span></a>
+<a name="197"><span class="lineNum">     197 </span>            : {</a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :         for (auto&amp; functionInfo: _cfg.functionInfo | ranges::views::values)</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :                 for (CFG::BasicBlock* exit: functionInfo.exits)</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :                         util::BreadthFirstSearch&lt;CFG::BasicBlock*&gt;{{exit}}.run([&amp;](CFG::BasicBlock* _block, auto _addChild) {</span></a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :                                 _block-&gt;needsCleanStack = true;</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 :                                 for (CFG::BasicBlock* entry: _block-&gt;entries)</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 :                                         _addChild(entry);</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 :                         });</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="206"><span class="lineNum">     206 </span>            : }</a>
+<a name="207"><span class="lineNum">     207 </span>            : </a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineNoCov">          0 : std::unique_ptr&lt;CFG&gt; ControlFlowGraphBuilder::build(</span></a>
+<a name="209"><span class="lineNum">     209 </span>            :         AsmAnalysisInfo const&amp; _analysisInfo,</a>
+<a name="210"><span class="lineNum">     210 </span>            :         Dialect const&amp; _dialect,</a>
+<a name="211"><span class="lineNum">     211 </span>            :         Block const&amp; _block</a>
+<a name="212"><span class="lineNum">     212 </span>            : )</a>
+<a name="213"><span class="lineNum">     213 </span>            : {</a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineNoCov">          0 :         auto result = std::make_unique&lt;CFG&gt;();</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 :         result-&gt;entry = &amp;result-&gt;makeBlock(debugDataOf(_block));</span></a>
+<a name="216"><span class="lineNum">     216 </span>            : </a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineNoCov">          0 :         ControlFlowSideEffectsCollector sideEffects(_dialect, _block);</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 :         ControlFlowGraphBuilder builder(*result, _analysisInfo, sideEffects.functionSideEffects(), _dialect);</span></a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 :         builder.m_currentBlock = result-&gt;entry;</span></a>
+<a name="220"><span class="lineNum">     220 </span><span class="lineNoCov">          0 :         builder(_block);</span></a>
+<a name="221"><span class="lineNum">     221 </span>            : </a>
+<a name="222"><span class="lineNum">     222 </span><span class="lineNoCov">          0 :         cleanUnreachable(*result);</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 :         markRecursiveCalls(*result);</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 :         markStartsOfSubGraphs(*result);</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineNoCov">          0 :         markNeedsCleanStack(*result);</span></a>
+<a name="226"><span class="lineNum">     226 </span>            : </a>
+<a name="227"><span class="lineNum">     227 </span>            :         // TODO: It might be worthwhile to run some further simplifications on the graph itself here.</a>
+<a name="228"><span class="lineNum">     228 </span>            :         // E.g. if there is a jump to a node that has the jumping node as its only entry, the nodes can be fused, etc.</a>
+<a name="229"><span class="lineNum">     229 </span>            : </a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineNoCov">          0 :         return result;</span></a>
+<a name="231"><span class="lineNum">     231 </span>            : }</a>
+<a name="232"><span class="lineNum">     232 </span>            : </a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineNoCov">          0 : ControlFlowGraphBuilder::ControlFlowGraphBuilder(</span></a>
+<a name="234"><span class="lineNum">     234 </span>            :         CFG&amp; _graph,</a>
+<a name="235"><span class="lineNum">     235 </span>            :         AsmAnalysisInfo const&amp; _analysisInfo,</a>
+<a name="236"><span class="lineNum">     236 </span>            :         std::map&lt;FunctionDefinition const*, ControlFlowSideEffects&gt; const&amp; _functionSideEffects,</a>
+<a name="237"><span class="lineNum">     237 </span>            :         Dialect const&amp; _dialect</a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 : ):</span></a>
+<a name="239"><span class="lineNum">     239 </span>            :         m_graph(_graph),</a>
+<a name="240"><span class="lineNum">     240 </span>            :         m_info(_analysisInfo),</a>
+<a name="241"><span class="lineNum">     241 </span>            :         m_functionSideEffects(_functionSideEffects),</a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineNoCov">          0 :         m_dialect(_dialect)</span></a>
+<a name="243"><span class="lineNum">     243 </span>            : {</a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="245"><span class="lineNum">     245 </span>            : </a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 : StackSlot ControlFlowGraphBuilder::operator()(Literal const&amp; _literal)</span></a>
+<a name="247"><span class="lineNum">     247 </span>            : {</a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 :         return LiteralSlot{_literal.value.value(), _literal.debugData};</span></a>
+<a name="249"><span class="lineNum">     249 </span>            : }</a>
+<a name="250"><span class="lineNum">     250 </span>            : </a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 : StackSlot ControlFlowGraphBuilder::operator()(Identifier const&amp; _identifier)</span></a>
+<a name="252"><span class="lineNum">     252 </span>            : {</a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :         return VariableSlot{lookupVariable(_identifier.name), _identifier.debugData};</span></a>
+<a name="254"><span class="lineNum">     254 </span>            : }</a>
+<a name="255"><span class="lineNum">     255 </span>            : </a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 : StackSlot ControlFlowGraphBuilder::operator()(Expression const&amp; _expression)</span></a>
+<a name="257"><span class="lineNum">     257 </span>            : {</a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :         return std::visit(*this, _expression);</span></a>
+<a name="259"><span class="lineNum">     259 </span>            : }</a>
+<a name="260"><span class="lineNum">     260 </span>            : </a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineNoCov">          0 : StackSlot ControlFlowGraphBuilder::operator()(FunctionCall const&amp; _call)</span></a>
+<a name="262"><span class="lineNum">     262 </span>            : {</a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 :         Stack const&amp; output = visitFunctionCall(_call);</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :         yulAssert(output.size() == 1, &quot;&quot;);</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineNoCov">          0 :         return output.front();</span></a>
+<a name="266"><span class="lineNum">     266 </span>            : }</a>
+<a name="267"><span class="lineNum">     267 </span>            : </a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::operator()(VariableDeclaration const&amp; _varDecl)</span></a>
+<a name="269"><span class="lineNum">     269 </span>            : {</a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineNoCov">          0 :         yulAssert(m_currentBlock, &quot;&quot;);</span></a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineNoCov">          0 :         auto declaredVariables = _varDecl.variables | ranges::views::transform([&amp;](NameWithDebugData const&amp; _var) {</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineNoCov">          0 :                 return VariableSlot{lookupVariable(_var.name), _var.debugData};</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 :         }) | ranges::to&lt;std::vector&lt;VariableSlot&gt;&gt;;</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineNoCov">          0 :         Stack input;</span></a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :         if (_varDecl.value)</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :                 input = visitAssignmentRightHandSide(*_varDecl.value, declaredVariables.size());</span></a>
+<a name="277"><span class="lineNum">     277 </span>            :         else</a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineNoCov">          0 :                 input = Stack(_varDecl.variables.size(), LiteralSlot{0, _varDecl.debugData});</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineNoCov">          0 :         m_currentBlock-&gt;operations.emplace_back(CFG::Operation{</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineNoCov">          0 :                 std::move(input),</span></a>
+<a name="281"><span class="lineNum">     281 </span>            :                 declaredVariables | ranges::to&lt;Stack&gt;,</a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :                 CFG::Assignment{_varDecl.debugData, declaredVariables}</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 :         });</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::operator()(Assignment const&amp; _assignment)</span></a>
+<a name="286"><span class="lineNum">     286 </span>            : {</a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :         auto assignedVariables = _assignment.variableNames | ranges::views::transform([&amp;](Identifier const&amp; _var) {</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :                 return VariableSlot{lookupVariable(_var.name), _var.debugData};</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :         }) | ranges::to&lt;std::vector&lt;VariableSlot&gt;&gt;;</span></a>
+<a name="290"><span class="lineNum">     290 </span>            : </a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :         Stack input = visitAssignmentRightHandSide(*_assignment.value, assignedVariables.size());</span></a>
+<a name="292"><span class="lineNum">     292 </span><span class="lineNoCov">          0 :         yulAssert(m_currentBlock);</span></a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :         m_currentBlock-&gt;operations.emplace_back(CFG::Operation{</span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineNoCov">          0 :                 std::move(input),</span></a>
+<a name="295"><span class="lineNum">     295 </span>            :                 // output</a>
+<a name="296"><span class="lineNum">     296 </span>            :                 assignedVariables | ranges::to&lt;Stack&gt;,</a>
+<a name="297"><span class="lineNum">     297 </span>            :                 // operation</a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineNoCov">          0 :                 CFG::Assignment{_assignment.debugData, assignedVariables}</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineNoCov">          0 :         });</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::operator()(ExpressionStatement const&amp; _exprStmt)</span></a>
+<a name="302"><span class="lineNum">     302 </span>            : {</a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineNoCov">          0 :         std::visit(util::GenericVisitor{</span></a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineNoCov">          0 :                 [&amp;](FunctionCall const&amp; _call) {</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineNoCov">          0 :                         Stack const&amp; output = visitFunctionCall(_call);</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineNoCov">          0 :                         yulAssert(output.empty(), &quot;&quot;);</span></a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineNoCov">          0 :                 },</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineNoCov">          0 :                 [&amp;](auto const&amp;) { yulAssert(false, &quot;&quot;); }</span></a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineNoCov">          0 :         }, _exprStmt.expression);</span></a>
+<a name="310"><span class="lineNum">     310 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="311"><span class="lineNum">     311 </span>            : </a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::operator()(Block const&amp; _block)</span></a>
+<a name="313"><span class="lineNum">     313 </span>            : {</a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineNoCov">          0 :         ScopedSaveAndRestore saveScope(m_scope, m_info.scopes.at(&amp;_block).get());</span></a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineNoCov">          0 :         for (auto const&amp; statement: _block.statements)</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :                 if (auto const* function = std::get_if&lt;FunctionDefinition&gt;(&amp;statement))</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineNoCov">          0 :                         registerFunction(*function);</span></a>
+<a name="318"><span class="lineNum">     318 </span><span class="lineNoCov">          0 :         for (auto const&amp; statement: _block.statements)</span></a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 :                 std::visit(*this, statement);</span></a>
+<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="321"><span class="lineNum">     321 </span>            : </a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::operator()(If const&amp; _if)</span></a>
+<a name="323"><span class="lineNum">     323 </span>            : {</a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 :         auto&amp; ifBranch = m_graph.makeBlock(debugDataOf(_if.body));</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 :         auto&amp; afterIf = m_graph.makeBlock(debugDataOf(*m_currentBlock));</span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :         StackSlot condition = std::visit(*this, *_if.condition);</span></a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 :         makeConditionalJump(debugDataOf(_if), std::move(condition), ifBranch, afterIf);</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 :         m_currentBlock = &amp;ifBranch;</span></a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :         (*this)(_if.body);</span></a>
+<a name="330"><span class="lineNum">     330 </span><span class="lineNoCov">          0 :         jump(debugDataOf(_if.body), afterIf);</span></a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="332"><span class="lineNum">     332 </span>            : </a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::operator()(Switch const&amp; _switch)</span></a>
+<a name="334"><span class="lineNum">     334 </span>            : {</a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineNoCov">          0 :         yulAssert(m_currentBlock, &quot;&quot;);</span></a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineNoCov">          0 :         langutil::DebugData::ConstPtr preSwitchDebugData = debugDataOf(_switch);</span></a>
+<a name="337"><span class="lineNum">     337 </span>            : </a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineNoCov">          0 :         auto ghostVariableId = m_graph.ghostVariables.size();</span></a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 :         YulName ghostVariableName(&quot;GHOST[&quot; + std::to_string(ghostVariableId) + &quot;]&quot;);</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineNoCov">          0 :         auto&amp; ghostVar = m_graph.ghostVariables.emplace_back(Scope::Variable{ghostVariableName});</span></a>
+<a name="341"><span class="lineNum">     341 </span>            : </a>
+<a name="342"><span class="lineNum">     342 </span>            :         // Artificially generate:</a>
+<a name="343"><span class="lineNum">     343 </span>            :         // let &lt;ghostVariable&gt; := &lt;switchExpression&gt;</a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineNoCov">          0 :         VariableSlot ghostVarSlot{ghostVar, debugDataOf(*_switch.expression)};</span></a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineNoCov">          0 :         StackSlot expression = std::visit(*this, *_switch.expression);</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 :         m_currentBlock-&gt;operations.emplace_back(CFG::Operation{</span></a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineNoCov">          0 :                 Stack{std::move(expression)},</span></a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 :                 Stack{ghostVarSlot},</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineNoCov">          0 :                 CFG::Assignment{_switch.debugData, {ghostVarSlot}}</span></a>
+<a name="350"><span class="lineNum">     350 </span><span class="lineNoCov">          0 :         });</span></a>
+<a name="351"><span class="lineNum">     351 </span>            : </a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :         BuiltinFunction const* equalityBuiltin = m_dialect.equalityFunction();</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 :         yulAssert(equalityBuiltin, &quot;&quot;);</span></a>
+<a name="354"><span class="lineNum">     354 </span>            : </a>
+<a name="355"><span class="lineNum">     355 </span>            :         // Artificially generate:</a>
+<a name="356"><span class="lineNum">     356 </span>            :         // eq(&lt;literal&gt;, &lt;ghostVariable&gt;)</a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineNoCov">          0 :         auto makeValueCompare = [&amp;](Case const&amp; _case) {</span></a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineNoCov">          0 :                 yul::FunctionCall const&amp; ghostCall = m_graph.ghostCalls.emplace_back(yul::FunctionCall{</span></a>
+<a name="359"><span class="lineNum">     359 </span>            :                         debugDataOf(_case),</a>
+<a name="360"><span class="lineNum">     360 </span><span class="lineNoCov">          0 :                         yul::Identifier{{}, &quot;eq&quot;_yulname},</span></a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineNoCov">          0 :                         {*_case.value, Identifier{{}, ghostVariableName}}</span></a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :                 });</span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineNoCov">          0 :                 CFG::Operation&amp; operation = m_currentBlock-&gt;operations.emplace_back(CFG::Operation{</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 :                         Stack{ghostVarSlot, LiteralSlot{_case.value-&gt;value.value(), debugDataOf(*_case.value)}},</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineNoCov">          0 :                         Stack{TemporarySlot{ghostCall, 0}},</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 :                         CFG::BuiltinCall{debugDataOf(_case), *equalityBuiltin, ghostCall, 2},</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineNoCov">          0 :                 });</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineNoCov">          0 :                 return operation.output.front();</span></a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineNoCov">          0 :         };</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :         CFG::BasicBlock&amp; afterSwitch = m_graph.makeBlock(preSwitchDebugData);</span></a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 :         yulAssert(!_switch.cases.empty(), &quot;&quot;);</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineNoCov">          0 :         for (auto const&amp; switchCase: _switch.cases | ranges::views::drop_last(1))</span></a>
+<a name="373"><span class="lineNum">     373 </span>            :         {</a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 :                 yulAssert(switchCase.value, &quot;&quot;);</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineNoCov">          0 :                 auto&amp; caseBranch = m_graph.makeBlock(debugDataOf(switchCase.body));</span></a>
+<a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 :                 auto&amp; elseBranch = m_graph.makeBlock(debugDataOf(_switch));</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :                 makeConditionalJump(debugDataOf(switchCase), makeValueCompare(switchCase), caseBranch, elseBranch);</span></a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineNoCov">          0 :                 m_currentBlock = &amp;caseBranch;</span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 :                 (*this)(switchCase.body);</span></a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 :                 jump(debugDataOf(switchCase.body), afterSwitch);</span></a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 :                 m_currentBlock = &amp;elseBranch;</span></a>
+<a name="382"><span class="lineNum">     382 </span>            :         }</a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 :         Case const&amp; switchCase = _switch.cases.back();</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineNoCov">          0 :         if (switchCase.value)</span></a>
+<a name="385"><span class="lineNum">     385 </span>            :         {</a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineNoCov">          0 :                 CFG::BasicBlock&amp; caseBranch = m_graph.makeBlock(debugDataOf(switchCase.body));</span></a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineNoCov">          0 :                 makeConditionalJump(debugDataOf(switchCase), makeValueCompare(switchCase), caseBranch, afterSwitch);</span></a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 :                 m_currentBlock = &amp;caseBranch;</span></a>
+<a name="389"><span class="lineNum">     389 </span>            :         }</a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 :         (*this)(switchCase.body);</span></a>
+<a name="391"><span class="lineNum">     391 </span><span class="lineNoCov">          0 :         jump(debugDataOf(switchCase.body), afterSwitch);</span></a>
+<a name="392"><span class="lineNum">     392 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="393"><span class="lineNum">     393 </span>            : </a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::operator()(ForLoop const&amp; _loop)</span></a>
+<a name="395"><span class="lineNum">     395 </span>            : {</a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 :         langutil::DebugData::ConstPtr preLoopDebugData = debugDataOf(_loop);</span></a>
+<a name="397"><span class="lineNum">     397 </span><span class="lineNoCov">          0 :         ScopedSaveAndRestore scopeRestore(m_scope, m_info.scopes.at(&amp;_loop.pre).get());</span></a>
+<a name="398"><span class="lineNum">     398 </span><span class="lineNoCov">          0 :         (*this)(_loop.pre);</span></a>
+<a name="399"><span class="lineNum">     399 </span>            : </a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineNoCov">          0 :         std::optional&lt;bool&gt; constantCondition;</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineNoCov">          0 :         if (auto const* literalCondition = std::get_if&lt;yul::Literal&gt;(_loop.condition.get()))</span></a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineNoCov">          0 :                 constantCondition = literalCondition-&gt;value.value() != 0;</span></a>
+<a name="403"><span class="lineNum">     403 </span>            : </a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineNoCov">          0 :         CFG::BasicBlock&amp; loopCondition = m_graph.makeBlock(debugDataOf(*_loop.condition));</span></a>
+<a name="405"><span class="lineNum">     405 </span><span class="lineNoCov">          0 :         CFG::BasicBlock&amp; loopBody = m_graph.makeBlock(debugDataOf(_loop.body));</span></a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineNoCov">          0 :         CFG::BasicBlock&amp; post = m_graph.makeBlock(debugDataOf(_loop.post));</span></a>
+<a name="407"><span class="lineNum">     407 </span><span class="lineNoCov">          0 :         CFG::BasicBlock&amp; afterLoop = m_graph.makeBlock(preLoopDebugData);</span></a>
+<a name="408"><span class="lineNum">     408 </span>            : </a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 :         ScopedSaveAndRestore scopedSaveAndRestore(m_forLoopInfo, ForLoopInfo{afterLoop, post});</span></a>
+<a name="410"><span class="lineNum">     410 </span>            : </a>
+<a name="411"><span class="lineNum">     411 </span><span class="lineNoCov">          0 :         if (constantCondition.has_value())</span></a>
+<a name="412"><span class="lineNum">     412 </span>            :         {</a>
+<a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 :                 if (*constantCondition)</span></a>
+<a name="414"><span class="lineNum">     414 </span>            :                 {</a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineNoCov">          0 :                         jump(debugDataOf(_loop.pre), loopBody);</span></a>
+<a name="416"><span class="lineNum">     416 </span><span class="lineNoCov">          0 :                         (*this)(_loop.body);</span></a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineNoCov">          0 :                         jump(debugDataOf(_loop.body), post);</span></a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineNoCov">          0 :                         (*this)(_loop.post);</span></a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineNoCov">          0 :                         jump(debugDataOf(_loop.post), loopBody, true);</span></a>
+<a name="420"><span class="lineNum">     420 </span>            :                 }</a>
+<a name="421"><span class="lineNum">     421 </span>            :                 else</a>
+<a name="422"><span class="lineNum">     422 </span><span class="lineNoCov">          0 :                         jump(debugDataOf(_loop.pre), afterLoop);</span></a>
+<a name="423"><span class="lineNum">     423 </span>            :         }</a>
+<a name="424"><span class="lineNum">     424 </span>            :         else</a>
+<a name="425"><span class="lineNum">     425 </span>            :         {</a>
+<a name="426"><span class="lineNum">     426 </span><span class="lineNoCov">          0 :                 jump(debugDataOf(_loop.pre), loopCondition);</span></a>
+<a name="427"><span class="lineNum">     427 </span><span class="lineNoCov">          0 :                 StackSlot condition = std::visit(*this, *_loop.condition);</span></a>
+<a name="428"><span class="lineNum">     428 </span><span class="lineNoCov">          0 :                 makeConditionalJump(debugDataOf(*_loop.condition), std::move(condition), loopBody, afterLoop);</span></a>
+<a name="429"><span class="lineNum">     429 </span><span class="lineNoCov">          0 :                 m_currentBlock = &amp;loopBody;</span></a>
+<a name="430"><span class="lineNum">     430 </span><span class="lineNoCov">          0 :                 (*this)(_loop.body);</span></a>
+<a name="431"><span class="lineNum">     431 </span><span class="lineNoCov">          0 :                 jump(debugDataOf(_loop.body), post);</span></a>
+<a name="432"><span class="lineNum">     432 </span><span class="lineNoCov">          0 :                 (*this)(_loop.post);</span></a>
+<a name="433"><span class="lineNum">     433 </span><span class="lineNoCov">          0 :                 jump(debugDataOf(_loop.post), loopCondition, true);</span></a>
+<a name="434"><span class="lineNum">     434 </span>            :         }</a>
+<a name="435"><span class="lineNum">     435 </span>            : </a>
+<a name="436"><span class="lineNum">     436 </span><span class="lineNoCov">          0 :         m_currentBlock = &amp;afterLoop;</span></a>
+<a name="437"><span class="lineNum">     437 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="438"><span class="lineNum">     438 </span>            : </a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::operator()(Break const&amp; _break)</span></a>
+<a name="440"><span class="lineNum">     440 </span>            : {</a>
+<a name="441"><span class="lineNum">     441 </span><span class="lineNoCov">          0 :         yulAssert(m_forLoopInfo.has_value(), &quot;&quot;);</span></a>
+<a name="442"><span class="lineNum">     442 </span><span class="lineNoCov">          0 :         jump(debugDataOf(_break), m_forLoopInfo-&gt;afterLoop);</span></a>
+<a name="443"><span class="lineNum">     443 </span><span class="lineNoCov">          0 :         m_currentBlock = &amp;m_graph.makeBlock(debugDataOf(*m_currentBlock));</span></a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="445"><span class="lineNum">     445 </span>            : </a>
+<a name="446"><span class="lineNum">     446 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::operator()(Continue const&amp; _continue)</span></a>
+<a name="447"><span class="lineNum">     447 </span>            : {</a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineNoCov">          0 :         yulAssert(m_forLoopInfo.has_value(), &quot;&quot;);</span></a>
+<a name="449"><span class="lineNum">     449 </span><span class="lineNoCov">          0 :         jump(debugDataOf(_continue), m_forLoopInfo-&gt;post);</span></a>
+<a name="450"><span class="lineNum">     450 </span><span class="lineNoCov">          0 :         m_currentBlock = &amp;m_graph.makeBlock(debugDataOf(*m_currentBlock));</span></a>
+<a name="451"><span class="lineNum">     451 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="452"><span class="lineNum">     452 </span>            : </a>
+<a name="453"><span class="lineNum">     453 </span>            : // '_leave' and '__leave' are reserved in VisualStudio</a>
+<a name="454"><span class="lineNum">     454 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::operator()(Leave const&amp; leave_)</span></a>
+<a name="455"><span class="lineNum">     455 </span>            : {</a>
+<a name="456"><span class="lineNum">     456 </span><span class="lineNoCov">          0 :         yulAssert(m_currentFunction.has_value(), &quot;&quot;);</span></a>
+<a name="457"><span class="lineNum">     457 </span><span class="lineNoCov">          0 :         m_currentBlock-&gt;exit = CFG::BasicBlock::FunctionReturn{debugDataOf(leave_), *m_currentFunction};</span></a>
+<a name="458"><span class="lineNum">     458 </span><span class="lineNoCov">          0 :         (*m_currentFunction)-&gt;exits.emplace_back(m_currentBlock);</span></a>
+<a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 :         m_currentBlock = &amp;m_graph.makeBlock(debugDataOf(*m_currentBlock));</span></a>
+<a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="461"><span class="lineNum">     461 </span>            : </a>
+<a name="462"><span class="lineNum">     462 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::operator()(FunctionDefinition const&amp; _function)</span></a>
+<a name="463"><span class="lineNum">     463 </span>            : {</a>
+<a name="464"><span class="lineNum">     464 </span><span class="lineNoCov">          0 :         yulAssert(m_scope, &quot;&quot;);</span></a>
+<a name="465"><span class="lineNum">     465 </span><span class="lineNoCov">          0 :         yulAssert(m_scope-&gt;identifiers.count(_function.name), &quot;&quot;);</span></a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineNoCov">          0 :         Scope::Function&amp; function = std::get&lt;Scope::Function&gt;(m_scope-&gt;identifiers.at(_function.name));</span></a>
+<a name="467"><span class="lineNum">     467 </span><span class="lineNoCov">          0 :         m_graph.functions.emplace_back(&amp;function);</span></a>
+<a name="468"><span class="lineNum">     468 </span>            : </a>
+<a name="469"><span class="lineNum">     469 </span><span class="lineNoCov">          0 :         CFG::FunctionInfo&amp; functionInfo = m_graph.functionInfo.at(&amp;function);</span></a>
+<a name="470"><span class="lineNum">     470 </span>            : </a>
+<a name="471"><span class="lineNum">     471 </span><span class="lineNoCov">          0 :         ControlFlowGraphBuilder builder{m_graph, m_info, m_functionSideEffects, m_dialect};</span></a>
+<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 :         builder.m_currentFunction = &amp;functionInfo;</span></a>
+<a name="473"><span class="lineNum">     473 </span><span class="lineNoCov">          0 :         builder.m_currentBlock = functionInfo.entry;</span></a>
+<a name="474"><span class="lineNum">     474 </span><span class="lineNoCov">          0 :         builder(_function.body);</span></a>
+<a name="475"><span class="lineNum">     475 </span><span class="lineNoCov">          0 :         functionInfo.exits.emplace_back(builder.m_currentBlock);</span></a>
+<a name="476"><span class="lineNum">     476 </span><span class="lineNoCov">          0 :         builder.m_currentBlock-&gt;exit = CFG::BasicBlock::FunctionReturn{debugDataOf(_function), &amp;functionInfo};</span></a>
+<a name="477"><span class="lineNum">     477 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="478"><span class="lineNum">     478 </span>            : </a>
+<a name="479"><span class="lineNum">     479 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::registerFunction(FunctionDefinition const&amp; _functionDefinition)</span></a>
+<a name="480"><span class="lineNum">     480 </span>            : {</a>
+<a name="481"><span class="lineNum">     481 </span><span class="lineNoCov">          0 :         yulAssert(m_scope, &quot;&quot;);</span></a>
+<a name="482"><span class="lineNum">     482 </span><span class="lineNoCov">          0 :         yulAssert(m_scope-&gt;identifiers.count(_functionDefinition.name), &quot;&quot;);</span></a>
+<a name="483"><span class="lineNum">     483 </span><span class="lineNoCov">          0 :         Scope::Function&amp; function = std::get&lt;Scope::Function&gt;(m_scope-&gt;identifiers.at(_functionDefinition.name));</span></a>
+<a name="484"><span class="lineNum">     484 </span>            : </a>
+<a name="485"><span class="lineNum">     485 </span><span class="lineNoCov">          0 :         yulAssert(m_info.scopes.at(&amp;_functionDefinition.body), &quot;&quot;);</span></a>
+<a name="486"><span class="lineNum">     486 </span><span class="lineNoCov">          0 :         Scope* virtualFunctionScope = m_info.scopes.at(m_info.virtualBlocks.at(&amp;_functionDefinition).get()).get();</span></a>
+<a name="487"><span class="lineNum">     487 </span><span class="lineNoCov">          0 :         yulAssert(virtualFunctionScope, &quot;&quot;);</span></a>
+<a name="488"><span class="lineNum">     488 </span>            : </a>
+<a name="489"><span class="lineNum">     489 </span><span class="lineNoCov">          0 :         bool inserted = m_graph.functionInfo.emplace(std::make_pair(&amp;function, CFG::FunctionInfo{</span></a>
+<a name="490"><span class="lineNum">     490 </span><span class="lineNoCov">          0 :                 _functionDefinition.debugData,</span></a>
+<a name="491"><span class="lineNum">     491 </span>            :                 function,</a>
+<a name="492"><span class="lineNum">     492 </span>            :                 _functionDefinition,</a>
+<a name="493"><span class="lineNum">     493 </span><span class="lineNoCov">          0 :                 &amp;m_graph.makeBlock(debugDataOf(_functionDefinition.body)),</span></a>
+<a name="494"><span class="lineNum">     494 </span><span class="lineNoCov">          0 :                 _functionDefinition.parameters | ranges::views::transform([&amp;](auto const&amp; _param) {</span></a>
+<a name="495"><span class="lineNum">     495 </span>            :                         return VariableSlot{</a>
+<a name="496"><span class="lineNum">     496 </span><span class="lineNoCov">          0 :                                 std::get&lt;Scope::Variable&gt;(virtualFunctionScope-&gt;identifiers.at(_param.name)),</span></a>
+<a name="497"><span class="lineNum">     497 </span><span class="lineNoCov">          0 :                                 _param.debugData</span></a>
+<a name="498"><span class="lineNum">     498 </span><span class="lineNoCov">          0 :                         };</span></a>
+<a name="499"><span class="lineNum">     499 </span>            :                 }) | ranges::to&lt;std::vector&gt;,</a>
+<a name="500"><span class="lineNum">     500 </span><span class="lineNoCov">          0 :                 _functionDefinition.returnVariables | ranges::views::transform([&amp;](auto const&amp; _retVar) {</span></a>
+<a name="501"><span class="lineNum">     501 </span>            :                         return VariableSlot{</a>
+<a name="502"><span class="lineNum">     502 </span><span class="lineNoCov">          0 :                                 std::get&lt;Scope::Variable&gt;(virtualFunctionScope-&gt;identifiers.at(_retVar.name)),</span></a>
+<a name="503"><span class="lineNum">     503 </span><span class="lineNoCov">          0 :                                 _retVar.debugData</span></a>
+<a name="504"><span class="lineNum">     504 </span><span class="lineNoCov">          0 :                         };</span></a>
+<a name="505"><span class="lineNum">     505 </span>            :                 }) | ranges::to&lt;std::vector&gt;,</a>
+<a name="506"><span class="lineNum">     506 </span>            :                 {},</a>
+<a name="507"><span class="lineNum">     507 </span><span class="lineNoCov">          0 :                 m_functionSideEffects.at(&amp;_functionDefinition).canContinue</span></a>
+<a name="508"><span class="lineNum">     508 </span><span class="lineNoCov">          0 :         })).second;</span></a>
+<a name="509"><span class="lineNum">     509 </span><span class="lineNoCov">          0 :         yulAssert(inserted);</span></a>
+<a name="510"><span class="lineNum">     510 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="511"><span class="lineNum">     511 </span>            : </a>
+<a name="512"><span class="lineNum">     512 </span><span class="lineNoCov">          0 : Stack const&amp; ControlFlowGraphBuilder::visitFunctionCall(FunctionCall const&amp; _call)</span></a>
+<a name="513"><span class="lineNum">     513 </span>            : {</a>
+<a name="514"><span class="lineNum">     514 </span><span class="lineNoCov">          0 :         yulAssert(m_scope, &quot;&quot;);</span></a>
+<a name="515"><span class="lineNum">     515 </span><span class="lineNoCov">          0 :         yulAssert(m_currentBlock, &quot;&quot;);</span></a>
+<a name="516"><span class="lineNum">     516 </span>            : </a>
+<a name="517"><span class="lineNum">     517 </span><span class="lineNoCov">          0 :         Stack const* output = nullptr;</span></a>
+<a name="518"><span class="lineNum">     518 </span><span class="lineNoCov">          0 :         bool canContinue = true;</span></a>
+<a name="519"><span class="lineNum">     519 </span><span class="lineNoCov">          0 :         if (BuiltinFunction const* builtin = m_dialect.builtin(_call.functionName.name))</span></a>
+<a name="520"><span class="lineNum">     520 </span>            :         {</a>
+<a name="521"><span class="lineNum">     521 </span><span class="lineNoCov">          0 :                 Stack inputs;</span></a>
+<a name="522"><span class="lineNum">     522 </span><span class="lineNoCov">          0 :                 for (auto&amp;&amp; [idx, arg]: _call.arguments | ranges::views::enumerate | ranges::views::reverse)</span></a>
+<a name="523"><span class="lineNum">     523 </span><span class="lineNoCov">          0 :                         if (!builtin-&gt;literalArgument(idx).has_value())</span></a>
+<a name="524"><span class="lineNum">     524 </span><span class="lineNoCov">          0 :                                 inputs.emplace_back(std::visit(*this, arg));</span></a>
+<a name="525"><span class="lineNum">     525 </span><span class="lineNoCov">          0 :                 CFG::BuiltinCall builtinCall{_call.debugData, *builtin, _call, inputs.size()};</span></a>
+<a name="526"><span class="lineNum">     526 </span><span class="lineNoCov">          0 :                 output = &amp;m_currentBlock-&gt;operations.emplace_back(CFG::Operation{</span></a>
+<a name="527"><span class="lineNum">     527 </span>            :                         // input</a>
+<a name="528"><span class="lineNum">     528 </span><span class="lineNoCov">          0 :                         std::move(inputs),</span></a>
+<a name="529"><span class="lineNum">     529 </span>            :                         // output</a>
+<a name="530"><span class="lineNum">     530 </span><span class="lineNoCov">          0 :                         ranges::views::iota(0u, builtin-&gt;numReturns) | ranges::views::transform([&amp;](size_t _i) {</span></a>
+<a name="531"><span class="lineNum">     531 </span><span class="lineNoCov">          0 :                                 return TemporarySlot{_call, _i};</span></a>
+<a name="532"><span class="lineNum">     532 </span>            :                         }) | ranges::to&lt;Stack&gt;,</a>
+<a name="533"><span class="lineNum">     533 </span>            :                         // operation</a>
+<a name="534"><span class="lineNum">     534 </span><span class="lineNoCov">          0 :                         std::move(builtinCall)</span></a>
+<a name="535"><span class="lineNum">     535 </span><span class="lineNoCov">          0 :                 }).output;</span></a>
+<a name="536"><span class="lineNum">     536 </span><span class="lineNoCov">          0 :                 canContinue = builtin-&gt;controlFlowSideEffects.canContinue;</span></a>
+<a name="537"><span class="lineNum">     537 </span>            :         }</a>
+<a name="538"><span class="lineNum">     538 </span>            :         else</a>
+<a name="539"><span class="lineNum">     539 </span>            :         {</a>
+<a name="540"><span class="lineNum">     540 </span><span class="lineNoCov">          0 :                 Scope::Function const&amp; function = lookupFunction(_call.functionName.name);</span></a>
+<a name="541"><span class="lineNum">     541 </span><span class="lineNoCov">          0 :                 canContinue = m_graph.functionInfo.at(&amp;function).canContinue;</span></a>
+<a name="542"><span class="lineNum">     542 </span><span class="lineNoCov">          0 :                 Stack inputs;</span></a>
+<a name="543"><span class="lineNum">     543 </span><span class="lineNoCov">          0 :                 if (canContinue)</span></a>
+<a name="544"><span class="lineNum">     544 </span><span class="lineNoCov">          0 :                         inputs.emplace_back(FunctionCallReturnLabelSlot{_call});</span></a>
+<a name="545"><span class="lineNum">     545 </span><span class="lineNoCov">          0 :                 for (auto const&amp; arg: _call.arguments | ranges::views::reverse)</span></a>
+<a name="546"><span class="lineNum">     546 </span><span class="lineNoCov">          0 :                         inputs.emplace_back(std::visit(*this, arg));</span></a>
+<a name="547"><span class="lineNum">     547 </span><span class="lineNoCov">          0 :                 output = &amp;m_currentBlock-&gt;operations.emplace_back(CFG::Operation{</span></a>
+<a name="548"><span class="lineNum">     548 </span>            :                         // input</a>
+<a name="549"><span class="lineNum">     549 </span><span class="lineNoCov">          0 :                         std::move(inputs),</span></a>
+<a name="550"><span class="lineNum">     550 </span>            :                         // output</a>
+<a name="551"><span class="lineNum">     551 </span><span class="lineNoCov">          0 :                         ranges::views::iota(0u, function.numReturns) | ranges::views::transform([&amp;](size_t _i) {</span></a>
+<a name="552"><span class="lineNum">     552 </span><span class="lineNoCov">          0 :                                 return TemporarySlot{_call, _i};</span></a>
+<a name="553"><span class="lineNum">     553 </span>            :                         }) | ranges::to&lt;Stack&gt;,</a>
+<a name="554"><span class="lineNum">     554 </span>            :                         // operation</a>
+<a name="555"><span class="lineNum">     555 </span><span class="lineNoCov">          0 :                         CFG::FunctionCall{_call.debugData, function, _call, /* recursive */ false, canContinue}</span></a>
+<a name="556"><span class="lineNum">     556 </span><span class="lineNoCov">          0 :                 }).output;</span></a>
+<a name="557"><span class="lineNum">     557 </span>            :         }</a>
+<a name="558"><span class="lineNum">     558 </span><span class="lineNoCov">          0 :         if (!canContinue)</span></a>
+<a name="559"><span class="lineNum">     559 </span>            :         {</a>
+<a name="560"><span class="lineNum">     560 </span><span class="lineNoCov">          0 :                 m_currentBlock-&gt;exit = CFG::BasicBlock::Terminated{};</span></a>
+<a name="561"><span class="lineNum">     561 </span><span class="lineNoCov">          0 :                 m_currentBlock = &amp;m_graph.makeBlock(debugDataOf(*m_currentBlock));</span></a>
+<a name="562"><span class="lineNum">     562 </span>            :         }</a>
+<a name="563"><span class="lineNum">     563 </span><span class="lineNoCov">          0 :         return *output;</span></a>
+<a name="564"><span class="lineNum">     564 </span>            : }</a>
+<a name="565"><span class="lineNum">     565 </span>            : </a>
+<a name="566"><span class="lineNum">     566 </span><span class="lineNoCov">          0 : Stack ControlFlowGraphBuilder::visitAssignmentRightHandSide(Expression const&amp; _expression, size_t _expectedSlotCount)</span></a>
+<a name="567"><span class="lineNum">     567 </span>            : {</a>
+<a name="568"><span class="lineNum">     568 </span><span class="lineNoCov">          0 :         return std::visit(util::GenericVisitor{</span></a>
+<a name="569"><span class="lineNum">     569 </span><span class="lineNoCov">          0 :                 [&amp;](FunctionCall const&amp; _call) -&gt; Stack {</span></a>
+<a name="570"><span class="lineNum">     570 </span><span class="lineNoCov">          0 :                         Stack const&amp; output = visitFunctionCall(_call);</span></a>
+<a name="571"><span class="lineNum">     571 </span><span class="lineNoCov">          0 :                         yulAssert(_expectedSlotCount == output.size(), &quot;&quot;);</span></a>
+<a name="572"><span class="lineNum">     572 </span><span class="lineNoCov">          0 :                         return output;</span></a>
+<a name="573"><span class="lineNum">     573 </span>            :                 },</a>
+<a name="574"><span class="lineNum">     574 </span><span class="lineNoCov">          0 :                 [&amp;](auto const&amp; _identifierOrLiteral) -&gt; Stack {</span></a>
+<a name="575"><span class="lineNum">     575 </span><span class="lineNoCov">          0 :                         yulAssert(_expectedSlotCount == 1, &quot;&quot;);</span></a>
+<a name="576"><span class="lineNum">     576 </span><span class="lineNoCov">          0 :                         return {(*this)(_identifierOrLiteral)};</span></a>
+<a name="577"><span class="lineNum">     577 </span>            :                 }</a>
+<a name="578"><span class="lineNum">     578 </span><span class="lineNoCov">          0 :         }, _expression);</span></a>
+<a name="579"><span class="lineNum">     579 </span>            : }</a>
+<a name="580"><span class="lineNum">     580 </span>            : </a>
+<a name="581"><span class="lineNum">     581 </span><span class="lineNoCov">          0 : Scope::Function const&amp; ControlFlowGraphBuilder::lookupFunction(YulName _name) const</span></a>
+<a name="582"><span class="lineNum">     582 </span>            : {</a>
+<a name="583"><span class="lineNum">     583 </span><span class="lineNoCov">          0 :         Scope::Function const* function = nullptr;</span></a>
+<a name="584"><span class="lineNum">     584 </span><span class="lineNoCov">          0 :         yulAssert(m_scope-&gt;lookup(_name, util::GenericVisitor{</span></a>
+<a name="585"><span class="lineNum">     585 </span>            :                 [](Scope::Variable&amp;) { yulAssert(false, &quot;Expected function name.&quot;); },</a>
+<a name="586"><span class="lineNum">     586 </span>            :                 [&amp;](Scope::Function&amp; _function) { function = &amp;_function; }</a>
+<a name="587"><span class="lineNum">     587 </span>            :         }), &quot;Function name not found.&quot;);</a>
+<a name="588"><span class="lineNum">     588 </span><span class="lineNoCov">          0 :         yulAssert(function, &quot;&quot;);</span></a>
+<a name="589"><span class="lineNum">     589 </span><span class="lineNoCov">          0 :         return *function;</span></a>
+<a name="590"><span class="lineNum">     590 </span>            : }</a>
+<a name="591"><span class="lineNum">     591 </span>            : </a>
+<a name="592"><span class="lineNum">     592 </span><span class="lineNoCov">          0 : Scope::Variable const&amp; ControlFlowGraphBuilder::lookupVariable(YulName _name) const</span></a>
+<a name="593"><span class="lineNum">     593 </span>            : {</a>
+<a name="594"><span class="lineNum">     594 </span><span class="lineNoCov">          0 :         yulAssert(m_scope, &quot;&quot;);</span></a>
+<a name="595"><span class="lineNum">     595 </span><span class="lineNoCov">          0 :         Scope::Variable const* var = nullptr;</span></a>
+<a name="596"><span class="lineNum">     596 </span><span class="lineNoCov">          0 :         if (m_scope-&gt;lookup(_name, util::GenericVisitor{</span></a>
+<a name="597"><span class="lineNum">     597 </span><span class="lineNoCov">          0 :                 [&amp;](Scope::Variable&amp; _var) { var = &amp;_var; },</span></a>
+<a name="598"><span class="lineNum">     598 </span><span class="lineNoCov">          0 :                 [](Scope::Function&amp;)</span></a>
+<a name="599"><span class="lineNum">     599 </span>            :                 {</a>
+<a name="600"><span class="lineNum">     600 </span><span class="lineNoCov">          0 :                         yulAssert(false, &quot;Function not removed during desugaring.&quot;);</span></a>
+<a name="601"><span class="lineNum">     601 </span>            :                 }</a>
+<a name="602"><span class="lineNum">     602 </span>            :         }))</a>
+<a name="603"><span class="lineNum">     603 </span>            :         {</a>
+<a name="604"><span class="lineNum">     604 </span><span class="lineNoCov">          0 :                 yulAssert(var, &quot;&quot;);</span></a>
+<a name="605"><span class="lineNum">     605 </span><span class="lineNoCov">          0 :                 return *var;</span></a>
+<a name="606"><span class="lineNum">     606 </span>            :         };</a>
+<a name="607"><span class="lineNum">     607 </span><span class="lineNoCov">          0 :         yulAssert(false, &quot;External identifier access unimplemented.&quot;);</span></a>
+<a name="608"><span class="lineNum">     608 </span>            : }</a>
+<a name="609"><span class="lineNum">     609 </span>            : </a>
+<a name="610"><span class="lineNum">     610 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::makeConditionalJump(</span></a>
+<a name="611"><span class="lineNum">     611 </span>            :         langutil::DebugData::ConstPtr _debugData,</a>
+<a name="612"><span class="lineNum">     612 </span>            :         StackSlot _condition,</a>
+<a name="613"><span class="lineNum">     613 </span>            :         CFG::BasicBlock&amp; _nonZero,</a>
+<a name="614"><span class="lineNum">     614 </span>            :         CFG::BasicBlock&amp; _zero</a>
+<a name="615"><span class="lineNum">     615 </span>            : )</a>
+<a name="616"><span class="lineNum">     616 </span>            : {</a>
+<a name="617"><span class="lineNum">     617 </span><span class="lineNoCov">          0 :         yulAssert(m_currentBlock, &quot;&quot;);</span></a>
+<a name="618"><span class="lineNum">     618 </span><span class="lineNoCov">          0 :         m_currentBlock-&gt;exit = CFG::BasicBlock::ConditionalJump{</span></a>
+<a name="619"><span class="lineNum">     619 </span><span class="lineNoCov">          0 :                 std::move(_debugData),</span></a>
+<a name="620"><span class="lineNum">     620 </span><span class="lineNoCov">          0 :                 std::move(_condition),</span></a>
+<a name="621"><span class="lineNum">     621 </span>            :                 &amp;_nonZero,</a>
+<a name="622"><span class="lineNum">     622 </span>            :                 &amp;_zero</a>
+<a name="623"><span class="lineNum">     623 </span><span class="lineNoCov">          0 :         };</span></a>
+<a name="624"><span class="lineNum">     624 </span><span class="lineNoCov">          0 :         _nonZero.entries.emplace_back(m_currentBlock);</span></a>
+<a name="625"><span class="lineNum">     625 </span><span class="lineNoCov">          0 :         _zero.entries.emplace_back(m_currentBlock);</span></a>
+<a name="626"><span class="lineNum">     626 </span><span class="lineNoCov">          0 :         m_currentBlock = nullptr;</span></a>
+<a name="627"><span class="lineNum">     627 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="628"><span class="lineNum">     628 </span>            : </a>
+<a name="629"><span class="lineNum">     629 </span><span class="lineNoCov">          0 : void ControlFlowGraphBuilder::jump(</span></a>
+<a name="630"><span class="lineNum">     630 </span>            :         langutil::DebugData::ConstPtr _debugData,</a>
+<a name="631"><span class="lineNum">     631 </span>            :         CFG::BasicBlock&amp; _target,</a>
+<a name="632"><span class="lineNum">     632 </span>            :         bool backwards</a>
+<a name="633"><span class="lineNum">     633 </span>            : )</a>
+<a name="634"><span class="lineNum">     634 </span>            : {</a>
+<a name="635"><span class="lineNum">     635 </span><span class="lineNoCov">          0 :         yulAssert(m_currentBlock, &quot;&quot;);</span></a>
+<a name="636"><span class="lineNum">     636 </span><span class="lineNoCov">          0 :         m_currentBlock-&gt;exit = CFG::BasicBlock::Jump{std::move(_debugData), &amp;_target, backwards};</span></a>
+<a name="637"><span class="lineNum">     637 </span><span class="lineNoCov">          0 :         _target.entries.emplace_back(m_currentBlock);</span></a>
+<a name="638"><span class="lineNum">     638 </span><span class="lineNoCov">          0 :         m_currentBlock = &amp;_target;</span></a>
+<a name="639"><span class="lineNum">     639 </span><span class="lineNoCov">          0 : }</span></a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

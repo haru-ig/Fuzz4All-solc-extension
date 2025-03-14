@@ -1,0 +1,6 @@
+pragma solidity ^0.8.0;
+contract Example2 {
+    function __fallback(address _unused) public pure {
+
+    }
+}

@@ -1,0 +1,30 @@
+pragma solidity ^0.8.0;
+contract SemanticEquivalence_MutableNestedArrayAssignment_4FFBC182432566B439CFB651B8227342{
+    uint [[10,10]] memory arrayOne;
+    uint [[10,10]] memory arrayTwo;
+    uint [[10,10]] memory arrayThree;
+    uint [[10,10]] memory arrayFour;
+    uint [[10,10]] memory arrayFive;
+    uint [[10,10]] memory arraySix;
+    uint [[10,10]] memory arraySeven;
+    constructor()public{
+        uint [[10,10]] memory one_2 = arrayOne;
+        uint [[10,10]] memory two_3 = arrayOne;
+        arrayOne = arrayTwo;
+        arrayTwo = arrayThree;
+        arrayThree = arrayFour;
+        arrayFour = arrayFive;
+        arrayFive = arraySix;
+        arraySix = arraySeven;
+        arrayOne = arrayOne;
+        arrayTwo = arrayOne;
+        arrayThree = arrayOne;
+        arrayFour = arrayOne;
+        arrayFive = arrayOne;
+        arraySix = arrayOne;
+        arraySeven = arrayOne;
+        arrayOne = arrayOne;
+        arrayTwo = arrayOne;
+        arrayThree = arrayOne;
+        arrayFour = arrayOne;
+        arrayFive = arrayOne;

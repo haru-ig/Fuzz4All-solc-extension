@@ -1,0 +1,13 @@
+pragma solidity ^0.8.0;
+contract SemanticallyEquivalentDynamicallySizedArrayAssignment_3 {
+    uint8[] public field;
+    constructor() public {
+        byte[] memory c = new uint8[](5);
+        field = c;
+        field[0] = 1;
+        field[1] = 2;
+        field[2] = 3;
+        field[3] = 4;
+        field[4] = 5;
+    }
+}

@@ -1,0 +1,8 @@
+pragma solidity ^0.8.0;
+contract seven{
+    uint public r;
+    uint public x;
+    function k() public pure {
+        r = 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
+    }
+}

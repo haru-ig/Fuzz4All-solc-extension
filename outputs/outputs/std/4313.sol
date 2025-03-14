@@ -1,0 +1,8 @@
+pragma solidity ^0.8.0;
+contract Add
+{
+    function AddInt([uint a, uint b], [uint c, uint d]) public pure returns(uint)
+    {
+        return (a+b+c+d);
+    }
+}
