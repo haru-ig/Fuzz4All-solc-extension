@@ -1,7 +1,0 @@
-pragma solidity ^0.8.0;
-contract SolveModul2{
-   function test222() public pure returns(uint) {
-      return (0xB453F825000000) / 2;
-   }
-}
-```

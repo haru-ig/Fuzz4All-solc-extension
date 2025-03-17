@@ -1,7 +1,0 @@
-pragma solidity ^0.8.0;
-contract SemanticMutation9
-{
-}
-contract SemanticMutation10
-{
-}

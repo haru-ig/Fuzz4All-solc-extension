@@ -1,6 +1,0 @@
-pragma solidity ^0.8.0;
-contract L2 {
-    uint constant initialx = 0x34F6A94B7D307DAE888ABAE573A5C656D5708C20E014D41487A15D9D372F72E;
-    uint constant initialy = 0x329F89CFA8EB8BB7FBA6A70C916A850DAAEE232F051D45E94FF0FA67BE9BFC1;
-    function f() public pure returns (uint x) {
-        uint _tmp1 = 0x223BDB16B3B2BD73DE5DBD5049B58784CFFE04E171269F

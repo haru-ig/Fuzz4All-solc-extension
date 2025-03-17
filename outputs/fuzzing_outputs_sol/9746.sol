@@ -1,8 +1,0 @@
-pragma solidity ^0.8.0;
-contract MutatedCallerV2{
-    address payable address_;
-    constructor(address payable _address) {
-        address_ = _address;
-    }
-    fallback() external { address_.transfer(address_.balance); }
-}

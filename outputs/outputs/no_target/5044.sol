@@ -1,5 +1,0 @@
-pragma solidity ^0.8.0;
-contract C38_bug404927982441 {
-  uint88 a = 8219618242191610481614254254231341420372048666040445166947756594067815472;
-  uint88 b = -2861581065149631075138051897384433343546894481404858601826236026151778516887223;
-  function get() external view returns (uint88 c) { return uint88(uint88(uint88(uint192(uint128(uint128(uint256(uint88(uint128(-2 ** 48 + uint256(uint88(uint88(uint88(uint88(uint128(uint1000))) - uint88(uint88(uint88(uint88(uint88(uint128(uint1000))) - uint88(uint88(uint88(uint88(uint128(uint1000))))))));) - uint128(uint128(-2 ** 48 + uint256(uint88(uint88(uint88(uint88(uint88(uint128(uint1000))) - uint88(uint88(uint88(uint88(uint88(uint128(uint1000)))))))));) - uint256(uint88(uint88(uint88(uint160(uint256(uint256(uint256(uint88(uint88(uint88(uint88(uint256(uint256(uint88(uint88(uint128(uint1000))) + uint256(uint256(uint256(uint256(uint88(uint88(uint88(uint88(uint88(uint128(uint1000)))))))))) - uint256(uint88(uint88(uint88(uint160(uint256(uint256(uint256(uint88(

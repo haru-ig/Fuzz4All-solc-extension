@@ -1,9 +1,0 @@
-pragma solidity ^0.8.0;
-pragma experimental ABIEncoderV2;
-contract Ga3 {
-    uint256[] private a;
-    constructor() public {}
-    function g() public {
-        a[10] = 10;
-    }
-}

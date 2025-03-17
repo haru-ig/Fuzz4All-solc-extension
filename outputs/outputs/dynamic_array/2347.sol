@@ -1,3 +1,0 @@
-pragma solidity ^0.8.0;
-contract SemanticEquivalence_DynamicallySizedArrayAssignment_0079484b0bd94c9093c7ba7c6452d84d_011f88b3d6685d357ff3222605e0591b_43ff70ff78ff888304e67e022e809770 {
-}

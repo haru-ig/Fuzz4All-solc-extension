@@ -1,3 +1,0 @@
-pragma solidity ^0.8.0;
-
-uint[0xF00D]=[0x6487C744c43410E2422a593C40Ab8868391613aA];

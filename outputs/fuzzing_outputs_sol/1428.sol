@@ -1,4 +1,0 @@
-pragma solidity ^0.8.0;
-struct BrokenMutated{
-    function a() public{ }
-}

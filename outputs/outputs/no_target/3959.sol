@@ -1,2 +1,0 @@
-pragma solidity ^0.8.0;
- contract D { function f(C x) public; } interface I { function g() public returns (C b); function z(); } contract E { bool b; I c; bool c; I d; uint x; uint y; } contract C { bool public a; E public b; bool d; uint public e; uint8 x; uint public g; uint public h; constructor (uint) public { e = y; b = new C(d); b.b = false; c = new C(b); b = new E(b, new I(b), true, false, 3420843934237320808, 43); } }

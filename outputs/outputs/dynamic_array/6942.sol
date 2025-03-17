@@ -1,9 +1,0 @@
-pragma solidity ^0.8.0;
-contract Test3 {
-    mapping(address => uint[]) s2;
-    constructor() {
-        uint[4] memory i;
-        i[0]++;
-        s2[0] = i;
-    }
-}

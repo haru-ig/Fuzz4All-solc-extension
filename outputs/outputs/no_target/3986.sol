@@ -1,6 +1,0 @@
-pragma solidity ^0.8.0;
-contract W { bool constant k = true; bool  x; function f() pure { bool s; for (uint256 z; z < 10; z++) s = true; f=s; uint256 r; if(true) return b;} function f() pure { if(2>x) return true; uint256 s; bool b; if(true) return;} function f() pure { if(2>x) return;uint256 z; bool b;} function f() pure { if(2>x) return;} function f() pure { if(2>x) return;} }
-
-contract A { uint256 public x; } contract B { uint256 public x; bool a; } function f() public { bool x; for (uint256 b; b < 10; b++) x = a? ((b > x)? 2 : z) : b; x = f() || x; b = x & (~f()) || (a && x); c = b & (~c()) & (x & x) && b || c; d =!f(); x = c && b; x = (!(a || (a && b))); x = a && a; x = x && b; x = (((b * b) >> (b)) & (b!= b)); a = a || (a && b) && b; a = a || x &&!x; b = b || 1; x = (1 << 256) > b; c = c ||!(x & (b > a)); b = ((x | 1) + x) > b; b = (!x & a) & ((x | 2) | ((!x) | x)); int y = 2147483647; a = a + (a * b); a = f(a); x = (f() << (x - 1 >> 1)) >= ((b & (b << 1)) - x) >> x || b < 0 >> x; x = a >= (b * a); a >>= (x? (x >> 1) + (x & (x - 1)) : b + 1);
-
-contract Foo { } contract Bar { uint f; uint g; uint h; } function f() public { Bar memory e; f = f; f += g + (e.f + e.g); h = c.F.H[x = (g << 254); E storage d = c.C[1][x = (0 > g || 1 << (-1 >> x + x)) + 1]; d.f.f = g && (b || d.f) && e.f++; d.f

@@ -1,9 +1,0 @@
-pragma solidity ^0.8.0;
-contract SemanticEquivalence_DynamicallySizedNestedArrayAssignment_F20C6AA20A9866644B6097C4f7255aA4_2{
-    uint [][] memory zero_OneLevel_TwoLevel_ThreeLevel_FourLevel_FiveLevel_SixLevel_SevenLevel;
-
-    constructor()public payable{
-        uint [][] memory one_2 = zero_OneLevel_TwoLevel_ThreeLevel_FourLevel_FiveLevel_SixLevel_SevenLevel_TwoLevel_ThreeLevel_FourLevel_FiveLevel_SixLevel_SevenLevel;
-        uint [][] memory zero_OneLevel_OneOneLevel_OneOneOneLevel_OneOneOneOneLevel_OneOneOneOneOneLevel_OneOneOneOneOneOneLevel = zero_OneLevel_TwoLevel_ThreeLevel_FourLevel_FiveLevel_SixLevel_SevenLevel_TwoLevel_ThreeLevel_FourLevel_FiveLevel_SixLevel_SevenLevel;
-        zero_OneLevel_OneOneLevel_OneOneOneLevel_OneOneOneOneOneLevel_OneOneOneOneOneLevel_OneOneOneOneOneOneLevel = zero_OneLevel_TwoLevel_ThreeLevel_FourLevel_FiveLevel_SixLevel_SevenLevel_TwoLevel_ThreeLevel_FourLevel_FiveLevel_SixLevel_SevenLevel;
-        zero_OneLevel_

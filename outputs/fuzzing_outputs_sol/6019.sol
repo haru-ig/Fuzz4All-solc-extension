@@ -1,4 +1,0 @@
-pragma solidity ^0.8.0;
-contract ContractWithFallback {
-    function _fallback(uint) public pure {}
-}

@@ -1,2 +1,0 @@
-pragma solidity ^0.8.0;
-contract mutationsolidity_legacycontracts0812_v0814 is mutationsolidity_legacycontracts0812_v0814 { constructor(uint b) { a = 0; b = b; c = 0; d = 0; } uint[9] bbbb; constructor(uint c) { a = 0; b = 0; c = c; d = 0; } function setB(uint _b) { c = 0; d = 0; b = _b; } function setC(uint _c) { a = 0; b = 0; c = _c; d = 0; } function setD(uint _d) { a = 0; c = 0; b = d = 0; _d = _d; } function getB() returns (uint) { return block.timestamp; } }

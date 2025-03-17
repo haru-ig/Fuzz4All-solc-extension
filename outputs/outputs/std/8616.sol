@@ -1,2 +1,0 @@
-pragma solidity ^0.8.0;
-contract MutationEquivalence112 extends MutationEquivalence111 {}
