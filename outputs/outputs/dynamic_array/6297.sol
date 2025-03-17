@@ -1,9 +1,0 @@
-pragma solidity ^0.8.0;
-struct StructArray {
-  bytes13 s[13];
-}
-function get2 () public returns (bytes24[][] memory) {
-  StructArray storage storage2 = StructArray(keccak256(abi.encodePacked(
-    "\x19Ethereum Signed Message:\n31\x15010\x04060000526000506000600020821020f504003020028201115ec83f6bf6a48e3f58d1017aa420edccb797543ea788739e13989ce70f7ca59af0cfdc23917893470912103f49e3c1367b65a58012a1f69eb537440d417809afed5673948648c2855ff3d16061d39e3ff034b66a86",
-    keccak256("\x44\x6f\x6e\x65\x92\x8a\x76\xfb\x96\xfe\x4e\x22\x7c\x62\x19\xac\x56\xb1\x07\x2d\x2b\x8b\xb1\xb4\xd0\xc2\x8b\xba\xd4\x25\x77\xf5\x7c\x07\xf3\x5f\x32\x02\xf5\x45\x32\x58\x6d\x6b\xb8\x30\x06\xa3\x3c\x99\xc9\x6b\x81\x4a\x86\x29\xb3\x9a\x95\x6d\x6c\x88\x1d\x49\x22\x9d\x79\xfc\x5d\xab\xf0\x1a\x85\x25\x82\x5d\x10\xd8\xb2\x32"))));
-  bytes24[][] memory

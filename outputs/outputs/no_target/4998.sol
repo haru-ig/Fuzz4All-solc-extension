@@ -1,6 +1,0 @@
-pragma solidity ^0.8.0;
-contract ADC { function A(uint256 a) public view {a += 1;} }
-contract BDC { function D(uint256 a) public view {a -= 1;} }
-contract ACD { function C(uint256 a) public view {a -= 1;} }
-contract ADG4 { function D(uint256 a) public view {a = 1000000; } }
-contract G8 { function G6(uint256 a) public view {a = 0;} }

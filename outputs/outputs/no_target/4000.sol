@@ -1,3 +1,0 @@
-pragma solidity ^0.8.0;
- contract C { bool ok; uint public b; uint8 x; uint public c; uint32 d; uint64 e; assembly { } } contract D is C { bool public x = true; bool public y; bool public z; uint public d; uint public b; uint8 x; uint public c; uint32 d; uint64 e; assembly { } } contract E is C { bool public x = true; bool public y; bool public z; uint public d; uint public b; uint8 x; uint public c; uint32 d; uint64 e; assembly { } } struct T { bool ok; uint public b; uint8 x; uint public c; uint32 d; uint64 e; assembly { } } contract S { bool ok; uint public b; uint8 x; uint public c; uint32 d; uint64 e; assembly { } }
-pragma solidity 0.6.12;

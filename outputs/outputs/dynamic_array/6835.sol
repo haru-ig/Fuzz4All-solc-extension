@@ -1,9 +1,0 @@
-pragma solidity ^0.8.0;
-pragma experimental ABIEncoderV2;
-contract T34_call_data_array_semantics5 {
-    event Emit0(uint256 a);
-    event Emit1(uint256 a);
-    event Emit2(uint256 a);
-    event Emit3(uint256 a);
-    structTestCase(uint256 a, bytes20 b);
-}

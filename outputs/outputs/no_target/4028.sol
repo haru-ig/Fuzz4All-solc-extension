@@ -1,2 +1,0 @@
-pragma solidity ^0.8.0;
- contract Vulneratr { uint x = 0; uint y = 0; function f() public { x |= 1; } function g() public { x *= 0xdeadbeef; } function h() public { x >>= x; } function i() public { x -= address(this); } function m() public { x *= y & x; } function n() public { x /= y; } function o() public { x <<= 0x123456789090adcafebafcafee55c4f; } function p() public { x |= y; } function q() public { y += 0x7fffffff; y -= 0x7fffffff; y ^= 0x7fffffff; y >>= y; y *= y & 0x7fffffff; y >>= y; y &= y; } }

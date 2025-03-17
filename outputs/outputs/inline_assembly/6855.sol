@@ -1,7 +1,0 @@
-pragma solidity ^0.8.0;
-contract MutatedContactsExample086 {
-    address owner;
-    constructor() {
-        uint(owner);
-    }
-}

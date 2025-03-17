@@ -1,6 +1,0 @@
-pragma solidity ^0.8.0;
-contract CallerExample5 {
-    function add(uint x) public pure returns (uint) {
-        return x + 1;
-    }
-}

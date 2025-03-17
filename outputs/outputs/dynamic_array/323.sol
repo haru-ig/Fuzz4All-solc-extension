@@ -1,8 +1,0 @@
-pragma solidity ^0.8.0;
-contract R4 {
-    uint256[] public arr;
-    function f() public {
-        arr.push(0);
-        uint256[] memory b = arr;
-    }
-}

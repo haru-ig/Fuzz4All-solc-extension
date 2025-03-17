@@ -1,3 +1,0 @@
-pragma solidity ^0.8.0;
-contract EquivalentArithmetic113 is EquivalentArithmetic110 {
-}

@@ -1,7 +1,0 @@
-pragma solidity ^0.8.0;
-contract test57 {
-	uint32 public d57;
-    function test() public returns (uint16) {
-        return (d57);
-    }
-}

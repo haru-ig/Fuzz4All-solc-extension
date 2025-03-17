@@ -1,4 +1,0 @@
-pragma solidity ^0.8.0;
-contract ContractB is ContractA {
-    constructor();
-}

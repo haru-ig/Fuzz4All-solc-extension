@@ -1,2 +1,0 @@
-pragma solidity ^0.8.0;
-contract Bug2 { function isBugger() public { contract Bug0x02FF {} contract Bug0xFFFF {} contract Bug1 { address public x; constructor(address x_) { x = x_; } function getAddressFromBug() public pure returns(address) { if (Bug0x02FF.x == Bug0xFFFF.x) { return Bug0x02FF.x; } if ((x == address(Bug0x03FF)) && (Bug0x05FF < 0)) { return Bug0xFFFF.x; } if ((Bug0x05FF < 0) && (x == Bug0x0101) && (Bug1.x <= address(this))) { return address(this); } }

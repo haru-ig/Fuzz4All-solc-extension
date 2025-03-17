@@ -1,8 +1,0 @@
-pragma solidity ^0.8.0;
-contract SimpleExample18 {
-    uint num = uint(uint256(uint160(0x266d)));
-    function doSomething(bytes memory _data) public {
-        num = uint(min(num, 1));
-        num = max(num, 5);
-    }
-}
