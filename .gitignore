@@ -5,6 +5,8 @@ api_key.txt
 testbed/
 Results/
 __pycache__/
+crytic-export/
+.pre-commit-config.yaml
 
 # fuzzing artifacts
 .z3-trace
